@@ -20,18 +20,25 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "OrderId")
     private int order_id;
+
     @Column(name = "ProductId")
     private int product_id;
+
     @Column(name = "Thumbnail")
     private byte[] thumbnail;
+
     @Column(name = "Quantity")
     private int quantity;
+
     @Column(name = "StaffId")
     private int staff_id;
+
     @Column(name = "OrderDate")
     private Date order_date;
+
     @Column(name = "OrderDelivery")
     private  Date order_delivery;
+
     @Column(name = "Status")
     private String status;
 }
