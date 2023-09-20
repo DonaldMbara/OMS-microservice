@@ -4,6 +4,7 @@ import com.donmba.productservice.dto.ProductRequest;
 import com.donmba.productservice.dto.ProductResponse;
 import com.donmba.productservice.model.Product;
 import com.donmba.productservice.repository.ProductRepository;
+import com.donmba.productservice.utils.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,19 +35,9 @@ public class ProductService {
     public List<ProductResponse> getAllProducts(){
        List<Product> products = productRepository.findAll();
 
-       return products.stream().map(product -> mapToProductResponse(product)).toList();
+       return products.stream()
+               .map(ProductMapper::mapToProductResponse)
+               .toList();
 
-    }
-
-    private ProductResponse mapToProductResponse(Product product) {
-        return ProductResponse.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .thumbnail(product.getThumbnail())
-                .category_id(product.getCategory_id())
-                .price(product.getPrice())
-                .details(product.getDetails())
-                .quantity(product.getQuantity())
-                .build();
     }
 }
