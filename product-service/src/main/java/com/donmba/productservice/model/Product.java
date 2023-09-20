@@ -18,18 +18,23 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ProductId")
     private int id;
+
     @Column(name = "Name")
     private String name;
+
     @Column(name = "Thumbnail")
-    private byte[]  thumbnail;
+    private byte[] thumbnail;
+
     @Column(name = "CategoryID")
-    private String category_id;
+    private int category_id;
+
     @Column(name = "Price")
     private BigDecimal price;
+
     @Column(name = "Details")
     private String details;
+
     @Column(name = "Quantity")
     private int quantity;
 }
