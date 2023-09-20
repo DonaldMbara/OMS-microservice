@@ -69,7 +69,7 @@ class ProductServiceApplicationTests {
 			retrievedProduct.setId(2);
 			retrievedProduct.setName("iPhone 13");
 			retrievedProduct.setThumbnail("iVBORw0KGgoAAAANSUhEUgAAA0IAAAI=".getBytes());
-			retrievedProduct.setCategory_id("1");
+			retrievedProduct.setCategory_id(1);
 			retrievedProduct.setPrice(BigDecimal.valueOf(16699.99));
 			retrievedProduct.setDetails("Advanced smartphone.");
 
@@ -88,7 +88,7 @@ class ProductServiceApplicationTests {
 		return ProductRequest.builder()
 				.name("Oppo")
 				.thumbnail("iVBORw0KGgoAAAANSUhEUgAAA0IAAAI=".getBytes())
-				.category_id("1")
+				.category_id(1)
 				.price(BigDecimal.valueOf(699.99))
 				.details("A high-quality smartphone with advanced features.")
 				.build();
