@@ -6,6 +6,7 @@ import com.don.customerservice.model.Customer;
 public class CustomerMapper {
         public static CustomerResponse mapToCustomerResponse(Customer customer){
             return CustomerResponse.builder()
+                    .id(customer.getId())
                     .customer_area(customer.getCustomer_area())
                     .customer_street(customer.getCustomer_street())
                     .customer_city(customer.getCustomer_city())

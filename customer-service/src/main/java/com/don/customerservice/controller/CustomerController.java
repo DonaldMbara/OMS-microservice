@@ -7,13 +7,15 @@ import com.don.customerservice.service.CustomerService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
-@Controller
+@RestController
 @RequestMapping("/api/customer")
 @RequiredArgsConstructor
 public class CustomerController {
@@ -27,17 +29,19 @@ public class CustomerController {
 
     @GetMapping("/{CustomerId}")
     @ResponseStatus(HttpStatus.OK)
-    public CustomerResponse getCustomerDetails(@PathVariable("CustomerId") String id){
-        return customerService.getCustomerDetails(id)
-                .orElseThrow(() -> new EntityNotFoundException("Customer does not exist with id: " + id));
-    }
+    public ResponseEntity<CustomerResponse> getCustomerDetails(@PathVariable("CustomerId") String customerId) {
+        Optional<CustomerResponse> customerResponse = customerService.getCustomerDetails(customerId);
 
+        return customerResponse
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CustomerResponse> getCustomersDetails(){
-        return customerService.getCustomersDetailsList();
-    }
+    public List<CustomerResponse> getCustomersDetails(){return customerService.getCustomersDetailsList();}
+
 
     @PutMapping("/{CustomerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
