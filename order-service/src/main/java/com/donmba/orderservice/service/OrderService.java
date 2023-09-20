@@ -5,6 +5,7 @@ import com.donmba.orderservice.dto.OrderResponse;
 import com.donmba.orderservice.model.Order;
 import com.donmba.orderservice.repository.OrderRepository;
 import com.donmba.orderservice.utils.OrderMapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,8 @@ public class OrderService {
     }
 
     public Optional<OrderResponse> getOrder(String id){
-        Optional<Order> order = orderRepository.findById(id);
+        Optional<Order> order = Optional.ofNullable(orderRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Order does not exist with id: " + id)));
 
         return order.map(OrderMapper::mapToOrderResponse);
     }
