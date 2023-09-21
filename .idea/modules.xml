@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/custoimer-service/customer-service.iml" filepath="$PROJECT_DIR$/custoimer-service/customer-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/order-service/order-service.iml" filepath="$PROJECT_DIR$/order-service/order-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/product-service/product-service.iml" filepath="$PROJECT_DIR$/product-service/product-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/review-service/review-service.iml" filepath="$PROJECT_DIR$/review-service/review-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/staff-service/staff-service.iml" filepath="$PROJECT_DIR$/staff-service/staff-service.iml" />
     </modules>
   </component>
 </project>
