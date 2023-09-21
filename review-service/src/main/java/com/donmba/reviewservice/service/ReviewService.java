@@ -20,7 +20,7 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
-    public void createReview(ReviewRequest reviewRequest){
+    public void createReview(ReviewRequest reviewRequest) {
         Review review = Review.builder()
                 .customer_id(reviewRequest.getCustomer_id())
                 .product_id(reviewRequest.getProduct_id())
@@ -30,35 +30,45 @@ public class ReviewService {
 
         reviewRepository.save(review);
         log.info("Review {} is saved", review.getReview_id());
-}
+    }
 
-public List<ReviewResponse> getAllReviews(){
-    List<Review> reviews = reviewRepository.findAll();
+    public List<ReviewResponse> getAllReviews() {
+        List<Review> reviews = reviewRepository.findAll();
 
-    return reviews.stream()
-            .map(ReviewMapper::mapToReviewResponse)
-            .toList();
-}
+        return reviews.stream()
+                .map(ReviewMapper::mapToReviewResponse)
+                .toList();
+    }
 
-    public Optional<ReviewResponse> getReviewById(String id){
+    public Optional<ReviewResponse> getReviewById(int id) {
         Optional<Review> review = Optional.ofNullable(reviewRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Review does not exist with id: " + id)));
 
         return review.map(ReviewMapper::mapToReviewResponse);
     }
 
-    public Optional<ReviewResponse> getReviewByProductId(String id){
-        Optional<Review> review = Optional.ofNullable(reviewRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("No reviews for this product")));
+    public List<ReviewResponse> getReviewByProductId(int id) {
+        List<Review> reviews = reviewRepository.findReviewByProductId(id);
 
-        return review.map(ReviewMapper::mapToReviewResponse);
+        return reviews.stream()
+                .map(ReviewMapper::mapToReviewResponse)
+                .toList();
     }
-   public void deleteReviewById(String id){
-       Review review = reviewRepository.findById(id)
-               .orElseThrow(() -> new EntityNotFoundException("Review does not exist with id: " + id));
 
-       reviewRepository.deleteById(id);
-       log.info("Review {} is deleted id: ", review.getReview_id());
+    public List<ReviewResponse> getReviewByCustomerId(int id) {
+        List<Review> reviews = reviewRepository.findReviewByCustomerId(id);
 
-   }
+        return reviews.stream()
+                .map(ReviewMapper::mapToReviewResponse)
+                .toList();
+    }
+
+    public void deleteReviewById(int id) {
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Review does not exist with id: " + id));
+
+        reviewRepository.deleteById(id);
+        log.info("Review {} is deleted id: ", review.getReview_id());
+
+    }
 }

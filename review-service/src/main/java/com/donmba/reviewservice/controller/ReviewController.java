@@ -20,13 +20,13 @@ public class ReviewController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createReview(ReviewRequest reviewRequest){
+    public void createReview(@RequestBody ReviewRequest reviewRequest) {
         reviewService.createReview(reviewRequest);
     }
 
     @GetMapping("{ReviewId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ReviewResponse> getReviewById(@PathVariable("ReviewId") String reviewId){
+    public ResponseEntity<ReviewResponse> getReviewById(@PathVariable("ReviewId") int reviewId) {
         Optional<ReviewResponse> reviewResponse = reviewService.getReviewById(reviewId);
 
         return reviewResponse
@@ -36,23 +36,25 @@ public class ReviewController {
 
     @GetMapping("product/{ProductId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ReviewResponse> getReviewByProductId(@PathVariable("ProductId") String productId){
-        Optional<ReviewResponse> reviewResponse = reviewService.getReviewByProductId(productId);
+    public List<ReviewResponse> getReviewByProductId(@PathVariable("ProductId") int productId) {
+        return reviewService.getReviewByProductId(productId);
+    }
 
-        return reviewResponse
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("customer/{CustomerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ReviewResponse> getReviewByCustomerId(@PathVariable("CustomerId") int customerId) {
+        return reviewService.getReviewByCustomerId(customerId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ReviewResponse> getAllReview(){
+    public List<ReviewResponse> getAllReview() {
         return reviewService.getAllReviews();
     }
 
     @DeleteMapping("{ReviewId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteReviewById(@PathVariable("ReviewId") String reviewId){
+    public void deleteReviewById(@PathVariable("ReviewId") int reviewId) {
         reviewService.deleteReviewById(reviewId);
     }
 
