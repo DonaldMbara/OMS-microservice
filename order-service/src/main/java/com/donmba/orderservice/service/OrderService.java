@@ -44,7 +44,7 @@ public class OrderService {
                 .toList();
     }
 
-    public Optional<OrderResponse> getOrder(String id){
+    public Optional<OrderResponse> getOrder(int id){
         Optional<Order> order = Optional.ofNullable(orderRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Order does not exist with id: " + id)));
 

@@ -44,14 +44,14 @@ public class ProductService {
 
     }
 
-    public Optional<ProductResponse> getProduct(String id){
+    public Optional<ProductResponse> getProduct(int id){
         Optional<Product> product = Optional.ofNullable(productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product does not exist with id: " + id)));
 
         return product.map(ProductMapper::mapToProductResponse);
     }
 
-    public void updateProduct(String id, Product product){
+    public void updateProduct(int id, Product product){
 
         Product updateProduct = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product does not exist with id: "+ id));

@@ -39,7 +39,7 @@ public class CustomerService {
         log.info("Customer {} is saved", customer.getId());
     }
 
-    public Optional<CustomerResponse> getCustomerDetails(String id){
+    public Optional<CustomerResponse> getCustomerDetails(int id){
         Optional<Customer> customer = Optional.ofNullable(customerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Customer does not exist with id: " + id)));
 
@@ -54,7 +54,7 @@ public class CustomerService {
                 .toList();
     }
 
-    public void updateCustomerDetails(String id, Customer customer){
+    public void updateCustomerDetails(int id, Customer customer){
         Customer updateCustomer = customerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Customer does not exist with id: "+ customer.getId()));
 
