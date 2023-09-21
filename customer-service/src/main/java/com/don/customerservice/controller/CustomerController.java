@@ -29,7 +29,7 @@ public class CustomerController {
 
     @GetMapping("/{CustomerId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<CustomerResponse> getCustomerDetails(@PathVariable("CustomerId") String customerId) {
+    public ResponseEntity<CustomerResponse> getCustomerDetails(@PathVariable("CustomerId") int customerId) {
         Optional<CustomerResponse> customerResponse = customerService.getCustomerDetails(customerId);
 
         return customerResponse
@@ -45,7 +45,7 @@ public class CustomerController {
 
     @PutMapping("/{CustomerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateCustomerDetails(@PathVariable("CustomerId") String customerId, @RequestBody Customer customer) {
+    public void updateCustomerDetails(@PathVariable("CustomerId") int customerId, @RequestBody Customer customer) {
         customerService.updateCustomerDetails(customerId,customer);
     }
 
