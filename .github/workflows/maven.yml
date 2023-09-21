@@ -1,12 +1,6 @@
 name: OMS microservice
 
-on:
-  push:
-    branches:
-      - '*'
-  pull_request:
-    branches:
-      - '*'
+on: [push, pull_request]
 
 jobs:
   build:
@@ -25,8 +19,7 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn clean install
-
+        run: mvn clean package
       - name: Publish Artifact
         uses: actions/upload-artifact@v2
         with:
