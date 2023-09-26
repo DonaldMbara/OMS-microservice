@@ -16,13 +16,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private UserService userService;
-
-    public AuthController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> registration(@RequestBody UserRequest userRequest) {
         Optional<UserResponse> existingUser = userService.findUserByEmail(userRequest.getEmail());
 
@@ -35,11 +32,13 @@ public class AuthController {
     }
 
     @GetMapping("/role/{role}")
+    @ResponseStatus(HttpStatus.OK)
     public List<UserResponse> getUsersByRole(@PathVariable String role) {
         return userService.findUsersByRole(role);
     }
 
     @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
     public List<UserResponse> getAllUsers() {
         return userService.findAllUser();
     }
@@ -54,6 +53,7 @@ public class AuthController {
                 .orElse(ResponseEntity.notFound().build());
     }
     @PutMapping("/update/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUser(@PathVariable int id, @RequestBody UserRequest userRequest) {
         userService.updateUser(userRequest, id);
     }
