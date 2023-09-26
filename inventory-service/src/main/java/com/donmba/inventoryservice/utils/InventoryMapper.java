@@ -10,7 +10,7 @@ public class InventoryMapper {
                 .id(inventory.getId())
                 .quantity(inventory.getQuantity())
                 .location(inventory.getLocation())
-                .order_id(inventory.getOrder_id())
+                .product_id(inventory.getProduct_id())
                 .build();
     }
 }

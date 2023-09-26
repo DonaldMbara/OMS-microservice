@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class InventoryRequest {
     private int quantity;
     private String location;
-    private int order_id;
+    private int product_id;
 }

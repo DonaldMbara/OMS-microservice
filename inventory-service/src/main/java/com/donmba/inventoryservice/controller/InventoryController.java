@@ -36,9 +36,20 @@ public class InventoryController {
 
     }
 
+    @GetMapping("/product/{ProductId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<InventoryResponse> getInventoryByProductId(@PathVariable("ProductId") int inventoryId) {
+        Optional<InventoryResponse> inventoryResponse = inventoryService.getInventoryByProductId(inventoryId);
+
+        return inventoryResponse
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<InventoryResponse> getInventorysDetails(){return inventoryService.getInventoryList();}
+    public List<InventoryResponse> getInventoryDetails(){return inventoryService.getInventoryList();}
 
 
     @PutMapping("/{InventoryId}")

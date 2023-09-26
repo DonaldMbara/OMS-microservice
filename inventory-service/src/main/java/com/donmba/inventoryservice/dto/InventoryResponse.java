@@ -14,5 +14,5 @@ public class InventoryResponse {
     private int id;
     private int quantity;
     private String location;
-    private int order_id;
+    private int product_id;
 }

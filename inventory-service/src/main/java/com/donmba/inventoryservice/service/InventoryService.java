@@ -25,7 +25,7 @@ public class InventoryService {
         Inventory inventory = Inventory.builder()
                 .quantity(inventoryRequest.getQuantity())
                 .quantity(inventoryRequest.getQuantity())
-                .order_id(inventoryRequest.getOrder_id())
+                .product_id(inventoryRequest.getProduct_id())
                 .build();
 
         inventoryRepository.save(inventory);
@@ -39,8 +39,8 @@ public class InventoryService {
         return inventory.map(InventoryMapper::mapToInventoryResponse);
     }
 
-    public Optional<InventoryResponse> getInventoryByOrderId(int id) {
-        Optional<Inventory> inventory = Optional.ofNullable((Inventory) inventoryRepository.findInventoryByOrderId(id));
+    public Optional<InventoryResponse> getInventoryByProductId(int id) {
+        Optional<Inventory> inventory = Optional.ofNullable( inventoryRepository.findInventoryByProductId(id));
 
         return inventory.map(InventoryMapper::mapToInventoryResponse);
     }
@@ -61,7 +61,7 @@ public class InventoryService {
         updateInventory.setId(inventory.getId());
         updateInventory.setQuantity(inventory.getQuantity());
         updateInventory.setLocation(inventory.getLocation());
-        updateInventory.setOrder_id(inventory.getOrder_id());
+        updateInventory.setProduct_id(inventory.getProduct_id());
 
         inventoryRepository.save(updateInventory);
         log.info("Inventory {} is saved", inventory.getId());

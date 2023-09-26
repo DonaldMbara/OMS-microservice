@@ -26,6 +26,6 @@ public class Inventory {
     @Column(name = "Location")
     private String location;
 
-    @Column(name = "OrderId")
-    private int order_id;
+    @Column(name = "ProductId")
+    private int product_id;
 }
