@@ -36,15 +36,16 @@ public class InventoryController {
 
     }
 
-    @GetMapping("/product/{ProductId}")
+    @GetMapping("/check-stock/{productId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<InventoryResponse> getInventoryByProductId(@PathVariable("ProductId") int inventoryId) {
-        Optional<InventoryResponse> inventoryResponse = inventoryService.getInventoryByProductId(inventoryId);
+    public ResponseEntity<Boolean> checkStockAvailability(@PathVariable("productId") int productId) {
+        boolean isStockAvailable = inventoryService.checkStockAvailability(productId);
 
-        return inventoryResponse
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-
+        if (isStockAvailable) {
+            return ResponseEntity.ok(true); // Stock is available
+        } else {
+            return ResponseEntity.ok(false); // Stock is not available
+        }
     }
 
     @GetMapping

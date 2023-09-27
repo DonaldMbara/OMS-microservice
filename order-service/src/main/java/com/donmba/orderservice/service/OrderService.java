@@ -9,6 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,20 +20,36 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final WebClient.Builder webClientBuilder;
 
     public void createOrder(OrderRequest orderRequest){
-        Order order = Order.builder()
-                .product_id(orderRequest.getProduct_id())
-                .thumbnail(orderRequest.getThumbnail())
-                .quantity(orderRequest.getQuantity())
-                .staff_id(orderRequest.getStaff_id())
-                .order_date(orderRequest.getOrder_date())
-                .order_delivery(orderRequest.getOrder_delivery())
-                .status(orderRequest.getStatus())
-                .build();
 
-        orderRepository.save(order);
-        log.info("Order {} is saved", order.getOrder_id());
+        int productId = orderRequest.getProduct_id();
+
+        Boolean isStockAvailable = webClientBuilder.build()
+                .get()
+                .uri("http://localhost:8087/api/inventory/check-stock/{productId}", productId)
+                .retrieve()
+                .bodyToMono(Boolean.class)
+                .block();
+
+        if (isStockAvailable != null && isStockAvailable) {
+            Order order = Order.builder()
+                    .product_id(orderRequest.getProduct_id())
+                    .thumbnail(orderRequest.getThumbnail())
+                    .quantity(orderRequest.getQuantity())
+                    .staff_id(orderRequest.getStaff_id())
+                    .order_date(orderRequest.getOrder_date())
+                    .order_delivery(orderRequest.getOrder_delivery())
+                    .status(orderRequest.getStatus())
+                    .build();
+
+            orderRepository.save(order);
+            log.info("Order {} is saved", order.getOrder_id());
+        } else {
+            throw  new IllegalArgumentException("Stock is not available for the following product");
+        }
+
 
     }
 
