@@ -13,7 +13,6 @@ public class ProductMapper {
                 .category_id(product.getCategory_id())
                 .price(product.getPrice())
                 .details(product.getDetails())
-                .quantity(product.getQuantity())
                 .build();
     }
 }

@@ -28,7 +28,6 @@ public class ProductService {
                 .category_id(productRequest.getCategory_id())
                 .price(productRequest.getPrice())
                 .details(productRequest.getDetails())
-                .quantity(productRequest.getQuantity())
                 .build();
 
         productRepository.save(product);
@@ -61,7 +60,6 @@ public class ProductService {
         updateProduct.setCategory_id(product.getCategory_id());
         updateProduct.setPrice(product.getPrice());
         updateProduct.setDetails(product.getDetails());
-        updateProduct.setQuantity(product.getQuantity());
 
         productRepository.save(updateProduct);
         log.info("Product {} is saved", product.getId());

@@ -19,5 +19,4 @@ public class ProductRequest {
     private int category_id;
     private BigDecimal price;
     private String details;
-    private int quantity;
 }
