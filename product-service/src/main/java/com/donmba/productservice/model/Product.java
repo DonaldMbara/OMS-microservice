@@ -36,6 +36,4 @@ public class Product {
     @Column(name = "Details")
     private String details;
 
-    @Column(name = "Quantity")
-    private int quantity;
 }

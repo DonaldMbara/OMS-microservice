@@ -28,7 +28,6 @@ public class ProductService {
                 .category_id(productRequest.getCategory_id())
                 .price(productRequest.getPrice())
                 .details(productRequest.getDetails())
-                .quantity(productRequest.getQuantity())
                 .build();
 
         productRepository.save(product);
@@ -44,14 +43,14 @@ public class ProductService {
 
     }
 
-    public Optional<ProductResponse> getProduct(String id){
+    public Optional<ProductResponse> getProduct(int id){
         Optional<Product> product = Optional.ofNullable(productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product does not exist with id: " + id)));
 
         return product.map(ProductMapper::mapToProductResponse);
     }
 
-    public void updateProduct(String id, Product product){
+    public void updateProduct(int id, Product product){
 
         Product updateProduct = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product does not exist with id: "+ id));
@@ -61,7 +60,6 @@ public class ProductService {
         updateProduct.setCategory_id(product.getCategory_id());
         updateProduct.setPrice(product.getPrice());
         updateProduct.setDetails(product.getDetails());
-        updateProduct.setQuantity(product.getQuantity());
 
         productRepository.save(updateProduct);
         log.info("Product {} is saved", product.getId());

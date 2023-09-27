@@ -30,7 +30,7 @@ public class ProductController {
 
     @GetMapping("/{ProductId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable("ProductId") String productId) {
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable("ProductId") int productId) {
         Optional<ProductResponse> productResponse = productService.getProduct(productId);
 
         return productResponse
@@ -45,7 +45,7 @@ public class ProductController {
 
     @PutMapping("/{ProductId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateProduct(@PathVariable("ProductId") String productId, @RequestBody Product product) {
+    public void updateProduct(@PathVariable("ProductId") int productId, @RequestBody Product product) {
         productService.updateProduct(productId,product);
     }
 }
