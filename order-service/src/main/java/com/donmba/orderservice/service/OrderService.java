@@ -25,6 +25,7 @@ public class OrderService {
     public void createOrder(OrderRequest orderRequest){
 
         int productId = orderRequest.getProduct_id();
+        int quantity = orderRequest.getQuantity();
 
         Boolean isStockAvailable = webClientBuilder.build()
                 .get()
@@ -45,7 +46,16 @@ public class OrderService {
                     .build();
 
             orderRepository.save(order);
-            log.info("Order {} is saved", order.getOrder_id());
+            log.info("Order placed with order number {} is saved", order.getOrder_id());
+
+            webClientBuilder.build()
+                    .put()
+                    .uri("http://localhost:8087/api/inventory/update/{productId}", productId)
+                    .bodyValue(quantity)
+                    .exchange()
+                    .block();
+            log.info("Inventory quantity has been updated successfully");
+
         } else {
             throw  new IllegalArgumentException("Stock is not available for the following product");
         }

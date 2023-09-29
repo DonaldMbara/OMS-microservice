@@ -61,7 +61,7 @@ public class InventoryService {
     }
 
     public void updateInventoryDetails(int id, Inventory inventory){
-        Inventory updateInventory = inventoryRepository.findById(id)
+        Inventory updateInventory = inventoryRepository.findByProductId(id)
                 .orElseThrow(() -> new EntityNotFoundException("Inventory does not exist with id: "+ inventory.getId()));
 
 

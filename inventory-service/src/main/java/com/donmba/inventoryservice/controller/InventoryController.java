@@ -53,9 +53,9 @@ public class InventoryController {
     public List<InventoryResponse> getInventoryDetails(){return inventoryService.getInventoryList();}
 
 
-    @PutMapping("/{InventoryId}")
+    @PutMapping("/{ProductId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateInventoryDetails(@PathVariable("InventoryId") int inventoryId, @RequestBody Inventory inventory) {
-        inventoryService.updateInventoryDetails(inventoryId,inventory);
+    public void updateInventoryDetails(@PathVariable("ProductId") int productId, @RequestBody Inventory inventory) {
+        inventoryService.updateInventoryDetails(productId,inventory);
     }
 }
