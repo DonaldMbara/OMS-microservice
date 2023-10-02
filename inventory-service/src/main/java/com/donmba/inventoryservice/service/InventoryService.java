@@ -39,10 +39,17 @@ public class InventoryService {
         return inventory.map(InventoryMapper::mapToInventoryResponse);
     }
 
-    public Optional<InventoryResponse> getInventoryByProductId(int id) {
-        Optional<Inventory> inventory = Optional.ofNullable( inventoryRepository.findInventoryByProductId(id));
+    public boolean checkStockAvailability(int productId) {
+        Optional<Inventory> optionalInventory = inventoryRepository.findByProductId(productId);
 
-        return inventory.map(InventoryMapper::mapToInventoryResponse);
+        if (optionalInventory.isPresent()) {
+            Inventory inventory = optionalInventory.get();
+            int availableStock = inventory.getQuantity();
+
+            return availableStock > 0;
+        } else {
+            return false;
+        }
     }
 
     public List<InventoryResponse> getInventoryList(){
@@ -54,7 +61,7 @@ public class InventoryService {
     }
 
     public void updateInventoryDetails(int id, Inventory inventory){
-        Inventory updateInventory = inventoryRepository.findById(id)
+        Inventory updateInventory = inventoryRepository.findByProductId(id)
                 .orElseThrow(() -> new EntityNotFoundException("Inventory does not exist with id: "+ inventory.getId()));
 
 
