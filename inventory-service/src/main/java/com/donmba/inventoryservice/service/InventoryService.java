@@ -7,8 +7,10 @@ import com.donmba.inventoryservice.repository.InventoryRepository;
 import com.donmba.inventoryservice.utils.InventoryMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +41,7 @@ public class InventoryService {
         return inventory.map(InventoryMapper::mapToInventoryResponse);
     }
 
+    @Transactional(readOnly = true)
     public boolean checkStockAvailability(int productId) {
         Optional<Inventory> optionalInventory = inventoryRepository.findByProductId(productId);
 

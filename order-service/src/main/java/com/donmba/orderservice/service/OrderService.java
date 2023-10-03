@@ -22,10 +22,10 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
 
-    public void createOrder(OrderRequest orderRequest){
+    public String createOrder(OrderRequest orderRequest){
 
         int productId = orderRequest.getProduct_id();
-        int quantity = orderRequest.getQuantity();
+//        int quantity = orderRequest.getQuantity();
 
         Boolean isStockAvailable = webClientBuilder.build()
                 .get()
@@ -39,7 +39,7 @@ public class OrderService {
                     .product_id(orderRequest.getProduct_id())
                     .thumbnail(orderRequest.getThumbnail())
                     .quantity(orderRequest.getQuantity())
-                    .staff_id(orderRequest.getStaff_id())
+                    .customer_id(orderRequest.getCustomer_id())
                     .order_date(orderRequest.getOrder_date())
                     .order_delivery(orderRequest.getOrder_delivery())
                     .status(orderRequest.getStatus())
@@ -47,14 +47,15 @@ public class OrderService {
 
             orderRepository.save(order);
             log.info("Order placed with order number {} is saved", order.getOrder_id());
-
-            webClientBuilder.build()
-                    .put()
-                    .uri("http://localhost:8087/api/inventory/update/{productId}", productId)
-                    .bodyValue(quantity)
-                    .exchange()
-                    .block();
-            log.info("Inventory quantity has been updated successfully");
+            return "Order placed successfully";
+//
+//            webClientBuilder.build()
+//                    .put()
+//                    .uri("http://localhost:8087/api/inventory/update/{productId}", productId)
+//                    .bodyValue(quantity)
+//                    .exchange()
+//                    .block();
+//            log.info("Inventory quantity has been updated successfully");
 
         } else {
             throw  new IllegalArgumentException("Stock is not available for the following product");
