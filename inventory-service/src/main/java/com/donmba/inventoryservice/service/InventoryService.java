@@ -41,12 +41,8 @@ public class InventoryService {
         return inventory.map(InventoryMapper::mapToInventoryResponse);
     }
 
-//    @SneakyThrows
     @Transactional(readOnly = true)
     public boolean checkStockAvailability(int productId) {
-//        log.info("Wait started");
-//        Thread.sleep(10000);
-//        log.info("Wait stopped");
         Optional<Inventory> optionalInventory = inventoryRepository.findByProductId(productId);
 
         if (optionalInventory.isPresent()) {
