@@ -1,6 +1,5 @@
 package com.donmba.orderservice.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +17,7 @@ public class OrderResponse {
     private int product_id;
     private byte[] thumbnail;
     private int quantity;
-    private int staff_id;
+    private int customer_id;
     private Date order_date;
     private Date order_delivery;
     private String status;

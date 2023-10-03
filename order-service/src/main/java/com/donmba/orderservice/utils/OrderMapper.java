@@ -10,7 +10,7 @@ public class OrderMapper {
                 .product_id(order.getProduct_id())
                 .thumbnail(order.getThumbnail())
                 .quantity(order.getQuantity())
-                .staff_id(order.getStaff_id())
+                .customer_id(order.getCustomer_id())
                 .order_date(order.getOrder_date())
                 .order_delivery(order.getOrder_delivery())
                 .status(order.getStatus())

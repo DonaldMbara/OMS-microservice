@@ -30,8 +30,8 @@ public class Order {
     @Column(name = "Quantity")
     private int quantity;
 
-    @Column(name = "StaffId")
-    private int staff_id;
+    @Column(name = "CustomerId")
+    private int customer_id;
 
     @Column(name = "OrderDate")
     private Date order_date;
