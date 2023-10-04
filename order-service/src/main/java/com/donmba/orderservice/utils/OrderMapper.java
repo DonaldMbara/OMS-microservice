@@ -7,6 +7,7 @@ public class OrderMapper {
     public static OrderResponse mapToOrderResponse(Order order){
         return OrderResponse.builder()
                 .order_id(order.getOrder_id())
+                .order_number(order.getOrder_number())
                 .product_id(order.getProduct_id())
                 .thumbnail(order.getThumbnail())
                 .quantity(order.getQuantity())

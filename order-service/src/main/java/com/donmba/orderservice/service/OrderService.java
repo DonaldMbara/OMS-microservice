@@ -2,12 +2,15 @@ package com.donmba.orderservice.service;
 
 import com.donmba.orderservice.dto.OrderRequest;
 import com.donmba.orderservice.dto.OrderResponse;
+import com.donmba.orderservice.event.OrderPlacedEvent;
 import com.donmba.orderservice.model.Order;
 import com.donmba.orderservice.repository.OrderRepository;
 import com.donmba.orderservice.utils.OrderMapper;
+import com.donmba.orderservice.utils.OrderNumberGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -21,6 +24,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
+    private final KafkaTemplate<String,OrderPlacedEvent> kafkaTemplate;
 
     public String createOrder(OrderRequest orderRequest){
 
@@ -36,6 +40,7 @@ public class OrderService {
 
         if (isStockAvailable != null && isStockAvailable) {
             Order order = Order.builder()
+                    .order_number(OrderNumberGenerator.generateRandomStringWithDate())
                     .product_id(orderRequest.getProduct_id())
                     .thumbnail(orderRequest.getThumbnail())
                     .quantity(orderRequest.getQuantity())
@@ -46,6 +51,7 @@ public class OrderService {
                     .build();
 
             orderRepository.save(order);
+            kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrder_number()));
             log.info("Order placed with order number {} is saved", order.getOrder_id());
             return "Order placed successfully";
 //

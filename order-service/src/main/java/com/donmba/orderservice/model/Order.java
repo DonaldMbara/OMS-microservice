@@ -21,6 +21,9 @@ public class Order {
     @Column(name = "OrderId")
     private int order_id;
 
+    @Column(name = "OrderNumber")
+    private String order_number;
+
     @Column(name = "ProductId")
     private int product_id;
 
