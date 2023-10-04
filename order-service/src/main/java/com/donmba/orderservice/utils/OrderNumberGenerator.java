@@ -3,32 +3,22 @@ package com.donmba.orderservice.utils;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.security.SecureRandom;
 
+
+//BAD, creates duplicates. Fix this tomorrow
 public class OrderNumberGenerator {
-
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final AtomicInteger sequence = new AtomicInteger(0);
+    private static final SecureRandom random = new SecureRandom();
 
 
     public static synchronized String generateRandomStringWithDate() {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        String currentDate = dateFormat.format(new Date());
+        long randomPart = random.nextLong();
 
-        int sequenceNumber = sequence.getAndIncrement();
+        UUID uuid = UUID.randomUUID();
 
-        StringBuilder sb = new StringBuilder(currentDate);
-        sb.append(String.format("%04d", sequenceNumber));
-
-        SecureRandom random = new SecureRandom();
-        int LENGTH = 15;
-        for (int i = 0; i < LENGTH - currentDate.length() - 4; i++) {
-            int randomIndex = random.nextInt(CHARACTERS.length());
-            char randomChar = CHARACTERS.charAt(randomIndex);
-            sb.append(randomChar);
-        }
-
-        return sb.toString();
+        return uuid.toString() + "-" + randomPart;
     }
 }
