@@ -1,24 +1,20 @@
 package com.donmba.orderservice.utils;
 
-import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.security.SecureRandom;
+import java.util.Random;
 
-
-//BAD, creates duplicates. Fix this tomorrow
 public class OrderNumberGenerator {
-    private static final SecureRandom random = new SecureRandom();
 
+    static Random random = new Random();
 
-    public static synchronized String generateRandomStringWithDate() {
+    public static String generateOrderNumber() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        String currentTimestamp = dateFormat.format(new Date());
 
-        long randomPart = random.nextLong();
+        int randomExtra = random.nextInt(9999) ;
+        String orderNumber = String.format("%04d", randomExtra);
 
-        UUID uuid = UUID.randomUUID();
-
-        return uuid.toString() + "-" + randomPart;
+        return currentTimestamp + "-" + orderNumber;
     }
 }

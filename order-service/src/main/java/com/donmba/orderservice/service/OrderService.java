@@ -29,7 +29,6 @@ public class OrderService {
     public String createOrder(OrderRequest orderRequest){
 
         int productId = orderRequest.getProduct_id();
-//        int quantity = orderRequest.getQuantity();
 
         Boolean isStockAvailable = webClientBuilder.build()
                 .get()
@@ -40,7 +39,7 @@ public class OrderService {
 
         if (isStockAvailable != null && isStockAvailable) {
             Order order = Order.builder()
-                    .order_number(OrderNumberGenerator.generateRandomStringWithDate())
+                    .order_number(OrderNumberGenerator.generateOrderNumber())
                     .product_id(orderRequest.getProduct_id())
                     .thumbnail(orderRequest.getThumbnail())
                     .quantity(orderRequest.getQuantity())
@@ -54,14 +53,6 @@ public class OrderService {
             kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrder_number()));
             log.info("Order placed with order number {} is saved", order.getOrder_id());
             return "Order placed successfully";
-//
-//            webClientBuilder.build()
-//                    .put()
-//                    .uri("http://localhost:8087/api/inventory/update/{productId}", productId)
-//                    .bodyValue(quantity)
-//                    .exchange()
-//                    .block();
-//            log.info("Inventory quantity has been updated successfully");
 
         } else {
             throw  new IllegalArgumentException("Stock is not available for the following product");
