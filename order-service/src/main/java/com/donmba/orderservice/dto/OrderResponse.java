@@ -14,6 +14,7 @@ import java.util.Date;
 public class OrderResponse {
 
     private int order_id;
+    private String order_number;
     private int product_id;
     private byte[] thumbnail;
     private int quantity;
