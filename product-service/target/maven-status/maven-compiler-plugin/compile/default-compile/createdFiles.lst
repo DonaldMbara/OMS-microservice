@@ -1,11 +1,11 @@
-com/donmba/productservice/dto/ProductRequest.class
-com/donmba/productservice/dto/ProductRequest$ProductRequestBuilder.class
 com/donmba/productservice/repository/ProductRepository.class
 com/donmba/productservice/controller/ProductController.class
 com/donmba/productservice/dto/ProductResponse.class
 com/donmba/productservice/service/ProductService.class
 com/donmba/productservice/ProductServiceApplication.class
-com/donmba/productservice/dto/ProductResponse$ProductResponseBuilder.class
 com/donmba/productservice/model/Product.class
+com/donmba/productservice/dto/ProductRequest.class
+com/donmba/productservice/dto/ProductRequest$ProductRequestBuilder.class
+com/donmba/productservice/dto/ProductResponse$ProductResponseBuilder.class
 com/donmba/productservice/utils/ProductMapper.class
 com/donmba/productservice/model/Product$ProductBuilder.class

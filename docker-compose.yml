@@ -1,7 +1,7 @@
-version: '3'
+version: '3.7'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper
     container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
@@ -10,7 +10,7 @@ services:
       -  "2181:2181"
   
   broker:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka
     container_name: broker
     depends_on:
       - zookeeper
@@ -25,27 +25,27 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
-  mysql-order:
-    container_name: mysql-order
+  mysql-order-system-db:
+    container_name: mysql-order-system-db
     image: mysql
+    platform: linux/arm64
     environment:
+      MYSQL_ROOT_PASSWORD: Do1999ld#
       MYSQL_DB: ordersystemDB
-      MYSQL_USER: root
-      MYSQL_PASSWORD: Do1999ld#
-      MSQLDATA: /data/mysql
-
     volumes:
-      - ./mysql-order:/data/mysql
+      - ./mysql-order:/var/lib/mysql
     expose:
-      - "3306"
+      - "3307"
     ports:
-      - "3306:3306"
-    command: -p 3306
+      - "3307:3307"
+    command: --verbose --log-bin-index=/tmp/tmp.jeNHbS9fRW
     restart: unless-stopped
+
 
   keycloak-mysql:
     container_name: keycloak-mysql
-    image: mysql:5.7
+    image: mysql
+    platform: linux/arm64
     volumes:
       - ./mysql_keycloak_data:/var/lib/mysql
     environment:
@@ -56,7 +56,8 @@ services:
 
   keycloak:
     container_name: keycloak
-    image: quay.io/keycloak/keycloak:18.0.0
+    image:  quay.io/keycloak/keycloak:latest
+    platform: linux/arm64
     command: [ "start-dev", "--import-realm" ]
     environment:
       DB_VENDOR: MYSQL
@@ -80,17 +81,20 @@ services:
       - "9411:9411"
 
   discovery-server:
-    image: donmba/discovery-server:latest
+    image: donmba/discovery-server
+    pull_policy: always
     container_name: discovery-server
     ports:
       - "8761:8761"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_SERVER_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
       - zipkin
 
   api-gateway:
-    image: donmba/api-gateway:latest
+    image: donmba/api-gateway
+    pull_policy: always
     container_name: api-gateway
     ports:
       - "8088:8088"
@@ -99,6 +103,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
       - zipkin
       - discovery-server
@@ -106,22 +111,27 @@ services:
 
   product-service:
     container_name: product-service
-    image: donmba/product-service:latest
+    image: donmba/product-service
+    pull_policy: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
-      - mongo
+      - mysql-order-system-db
       - discovery-server
       - api-gateway
 
   order-service:
     container_name: order-service
-    image: donmba/order-service:latest
+    image: donmba/order-service
+    pull_policy: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB?useSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
-      - postgres-order
+      - mysql-order-system-db
       - broker
       - zipkin
       - discovery-server
@@ -129,46 +139,68 @@ services:
 
   inventory-service:
     container_name: inventory-service
-    image: donmba/inventory-service:latest
+    image: donmba/inventory-service
+    pull_policy: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB?useSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
-      - postgres-inventory
+      - mysql-order-system-db
       - discovery-server
       - api-gateway
 
   user-service:
-    container_name: inventory-service
-    image: donmba/user-service:latest
+    container_name: user-service
+    image: donmba/user-service
+    pull_policy: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB?useSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
-      - postgres-inventory
+      - mysql-order-system-db
       - discovery-server
       - api-gateway
 
   review-service:
     container_name: review-service
-    image: donmba/review-service:latest
+    image: donmba/review-service
+    pull_policy: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB?useSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
-      - postgres-inventory
+      - mysql-order-system-db
       - discovery-server
       - api-gateway
 
   notification-service:
     container_name: notification-service
-    image: donmba/notification-service:latest
+    image: donmba/notification-service
+    pull_policy: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
       - zipkin
       - broker
       - discovery-server
       - api-gateway
+
+  customer-service:
+    container_name: customer-service
+    image: donmba/customer-service
+    pull_policy: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB
+    depends_on:
+      - mysql-order-system-db
+      - discovery-server
+      - api-gateway
+
 
 
