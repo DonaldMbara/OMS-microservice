@@ -21,7 +21,6 @@ public class CustomerRequest {
     private Date customer_dob;
     private String customer_cell_phone;
     private String customer_email;
-    private int order_id;
     private BigDecimal wallet_balance;
     private String customer_first_name;
     private String customer_last_name;

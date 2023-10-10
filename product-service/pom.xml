@@ -15,6 +15,8 @@
 	<description>Product Service</description>
 	<properties>
 		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -34,7 +36,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>1.18.30</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -110,6 +112,22 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.2.1</version>
+				<configuration>
+					<from>
+						<image>eclipse-temurin:17.0.4.1_1-jre</image>
+					</from>
+					<to>
+						<image>registry.hub.docker.com/donmba/${project.artifactId}</image>
+						<tags>
+							<tag>latest</tag>
+						</tags>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>

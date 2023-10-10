@@ -14,7 +14,6 @@ public class CustomerMapper {
                     .customer_dob(customer.getCustomer_dob())
                     .customer_cell_phone(customer.getCustomer_cell_phone())
                     .customer_email(customer.getCustomer_email())
-                    .order_id(customer.getOrder_id())
                     .wallet_balance(customer.getWallet_balance())
                     .customer_first_name(customer.getCustomer_firt_name())
                     .customer_last_name(customer.getCustomer_last_name())

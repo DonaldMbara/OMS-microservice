@@ -29,7 +29,6 @@ public class CustomerService {
                 .customer_dob(customerRequest.getCustomer_dob())
                 .customer_cell_phone(customerRequest.getCustomer_cell_phone())
                 .customer_email(customerRequest.getCustomer_email())
-                .order_id(customerRequest.getOrder_id())
                 .wallet_balance(customerRequest.getWallet_balance())
                 .customer_firt_name(customerRequest.getCustomer_first_name())
                 .customer_last_name(customerRequest.getCustomer_last_name())
@@ -66,7 +65,6 @@ public class CustomerService {
         updateCustomer.setCustomer_dob(customer.getCustomer_dob());
         updateCustomer.setCustomer_cell_phone(customer.getCustomer_cell_phone());
         updateCustomer.setCustomer_email(customer.getCustomer_email());
-        updateCustomer.setOrder_id(customer.getOrder_id());
         updateCustomer.setWallet_balance(customer.getWallet_balance());
         updateCustomer.setCustomer_firt_name(customer.getCustomer_firt_name());
         updateCustomer.setCustomer_last_name(customer.getCustomer_last_name());
