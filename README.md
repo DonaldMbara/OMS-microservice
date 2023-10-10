@@ -72,4 +72,6 @@ The microservices ecosystem includes various tools for monitoring, authenticatio
     - Configure clients and secrets as needed.
     - Sometimes keycloak won't allow you to generate access token
       - to redirect traffic from keycloak to localhost update ``sudo nano /private/etc/hosts`` only in DEV thou
+    - local use: ``docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:22.0.4 start-dev``
+
 - **Actuator (Monitoring and Management)**: [http://localhost:8081/actuator/health](http://localhost:8081/actuator/health)
