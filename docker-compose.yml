@@ -33,7 +33,7 @@ services:
       MYSQL_ROOT_PASSWORD: Do1999ld#
       MYSQL_DB: ordersystemDB
     volumes:
-      - ./mysql-order:/var/lib/mysql
+      - ./mysql-order-system-db:/var/lib/mysql
       - ./local_database.sql:/docker-entrypoint-initdb.d/local-database.sql
     expose:
       - "3307"

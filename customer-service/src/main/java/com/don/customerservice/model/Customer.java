@@ -43,9 +43,6 @@ public class Customer {
     @Column(name = "CustomerEmail")
     private String customer_email;
 
-    @Column(name = "OrderId")
-    private int order_id;
-
     @Column(name = "WalletBalance")
     private BigDecimal wallet_balance;
 
