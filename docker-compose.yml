@@ -100,7 +100,7 @@ services:
     ports:
       - "8088:8088"
     expose:
-      - "8888"
+      - "8088"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
