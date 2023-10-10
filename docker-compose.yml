@@ -34,6 +34,7 @@ services:
       MYSQL_DB: ordersystemDB
     volumes:
       - ./mysql-order:/var/lib/mysql
+      - ./local_database.sql:/docker-entrypoint-initdb.d/local-database.sql
     expose:
       - "3307"
     ports:
@@ -115,7 +116,7 @@ services:
     pull_policy: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-order-system-db:3306/ordersystemDB
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
       - mysql-order-system-db
@@ -128,7 +129,7 @@ services:
     pull_policy: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-order-system-db:3306/ordersystemDB
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
       - mysql-order-system-db
@@ -143,7 +144,7 @@ services:
     pull_policy: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-order-system-db:3306/ordersystemDB
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
       - mysql-order-system-db
@@ -156,7 +157,7 @@ services:
     pull_policy: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-order-system-db:3306/ordersystemDB
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
       - mysql-order-system-db
@@ -169,7 +170,7 @@ services:
     pull_policy: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-order-system-db:3306/ordersystemDB
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
     depends_on:
       - mysql-order-system-db
@@ -196,11 +197,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ordersystemDB
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-order-system-db:3306/ordersystemDB
     depends_on:
       - mysql-order-system-db
       - discovery-server
       - api-gateway
-
-
-
