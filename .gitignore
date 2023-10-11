@@ -5,8 +5,9 @@ product-service/target/
 user-service/target/
 inventory-service/target
 review-service/target/
-mysql-order
+mysql-order-system-db
 mysql_keycloak_data
+mysql-order
 notification-service/.DS_Store
 order-service/.DS_Store
 product-service/.DS_Store
