@@ -29,6 +29,7 @@ The OMS (Order Management System) microservices architecture consists of seven i
 8. **User Service**:
     - Function: Stores user roles, such as manager and admin.
 
+
 ### Running the Microservices
 
 To manage the containers for these microservices, you can use Docker Compose with the following commands:
@@ -47,6 +48,9 @@ To manage the containers for these microservices, you can use Docker Compose wit
   ```
   docker-compose down
   ```
+  - Running keycloak locally
+  ```docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:22.0.4 start-dev
+```
 
 ### Database Configuration
 
