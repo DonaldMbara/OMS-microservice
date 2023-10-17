@@ -1,20 +1,14 @@
-# Default ignored files
-order-service/target/
-product-service/target/
-user-service/target/
-inventory-service/target/
-review-service/target/
-mysql-order-system-db
-mysql_keycloak_data
-mysql-order
-notification-service/.DS_Store
-order-service/.DS_Store
-product-service/.DS_Store
-review-service/.DS_Store
-user-service/.DS_Store
-customer-service/.DS_Store
-inventory-service/.DS_Store
-discovery-server/.DS_Store
-api-gateway/.DS_Store
-.DS_Store
+# Ignore target directories and files
+**/target/
+
+# Ignore IDE-specific files and directories
+**/.DS_Store
+**/.idea/
+
+# Ignore database directories and files
+mysql-order-system-db/
+mysql_keycloak_data/
+mysql-order/
+
+# Ignore Grafana
 grafana/
