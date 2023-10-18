@@ -141,35 +141,6 @@ VALUES (1, 'iPhone 13', _binary 'base64_encoded_image_data1', 1, 999.99, 'Advanc
 UNLOCK TABLES;
 
 
-
---
--- Table structure for table `User`
---
-
-DROP TABLE IF EXISTS `User`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `User`
-(
-    `UserId`    int          NOT NULL AUTO_INCREMENT,
-    `FirstName` varchar(255) NOT NULL,
-    `LastName`  varchar(255) DEFAULT NULL,
-    `CellPhone` varchar(255) DEFAULT NULL,
-    `Email`     varchar(255) NOT NULL,
-    `Password`  varchar(255) DEFAULT NULL,
-    `Role`      varchar(255) DEFAULT NULL,
-    PRIMARY KEY (`UserId`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 12
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `User`
---
-
-
 --
 -- Table structure for table `orders`
 --
@@ -358,25 +329,6 @@ INSERT INTO `Review`
 VALUES (1, 1, 1, 'This is a great product, I bought it last week and I am pleased!', 0),
        (3, 2, 2, 'I like th texture', 5);
 /*!40000 ALTER TABLE `Review`
-    ENABLE KEYS */;
-UNLOCK TABLES;
-
-LOCK TABLES `User` WRITE;
-/*!40000 ALTER TABLE `User`
-    DISABLE KEYS */;
-INSERT INTO `User`
-VALUES (1, 'Don', 'Mba', '082-123-4567', 'donmba@example.com', '082-123-4567', 'Admin'),
-       (2, 'Manager', 'Managerson', '071-987-6543', 'manager@example.com', 'managerpassword', 'Manager'),
-       (3, 'User', 'Userson', '079-555-7890', 'user@example.com', 'userpassword', 'User'),
-       (4, 'Delivery', 'Deliverson', '083-444-2222', 'delivery@example.com', 'deliverypassword', 'Delivery'),
-       (5, 'John', 'Doe', '123-456-7890', 'john.doe@example.com', 'password123', 'Manager'),
-       (6, 'Jane', 'Smith', '987-654-3210', 'jane.smith@example.com', 'password456', 'Salesperson'),
-       (7, 'Michael', 'Johnson', '555-123-4567', 'michael.johnson@example.com', 'password789', 'Clerk'),
-       (8, 'Admin', 'Adminson', '082-123-4567', 'admin@example.com', 'adminpassword', 'Admin'),
-       (9, 'Manager', 'Managerson', '071-987-6543', 'manager@example.com', 'managerpassword', 'Manager'),
-       (10, 'User', 'Userson', '079-555-7890', 'user@example.com', 'userpassword', 'User'),
-       (11, 'Delivery', 'Deliverson', '083-444-2222', 'delivery@example.com', 'deliverypassword', 'Delivery');
-/*!40000 ALTER TABLE `User`
     ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;

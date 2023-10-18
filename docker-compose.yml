@@ -150,18 +150,6 @@ services:
       - discovery-server
       - api-gateway
 
-  user-service:
-    container_name: user-service
-    image: donmba/user-service
-    pull_policy: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-order-system-db:3306/ordersystemDB
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
-    depends_on:
-      - mysql-order-system-db
-      - discovery-server
-      - api-gateway
 
   review-service:
     container_name: review-service
@@ -211,7 +199,6 @@ services:
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
-      - user-service
       - inventory-service
       - order-service
       - product-service
