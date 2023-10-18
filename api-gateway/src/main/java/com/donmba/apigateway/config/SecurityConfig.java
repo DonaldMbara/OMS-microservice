@@ -22,6 +22,9 @@ public class SecurityConfig {
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/eureka/**")
                         .permitAll()
+                        .pathMatchers("/product/**")
+                        .permitAll()
+                        .pathMatchers("/auth/product/**").hasRole("Admin")
                         .anyExchange()
                         .authenticated())
                 .oauth2ResourceServer(oath2 -> oath2.jwt(Customizer.withDefaults()));
