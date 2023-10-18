@@ -11,7 +11,7 @@ public class CorsConfig {
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.addAllowedOrigin("http://localhost:4200/**"); // Allow requests from Angular's localhost
+        corsConfig.addAllowedOrigin("http://localhost:4200"); // Allow requests from Angular's localhost
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod("*");
 
