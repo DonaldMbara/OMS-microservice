@@ -20,13 +20,9 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity security) {
         security.csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/eureka/**")
-                        .permitAll()
-                        .pathMatchers("/product/**")
-                        .permitAll()
+                        .pathMatchers("/eureka/**", "/product/**").permitAll()
                         .pathMatchers("/auth/product/**").hasRole("Admin")
-                        .anyExchange()
-                        .authenticated())
+                        .anyExchange().authenticated())
                 .oauth2ResourceServer(oath2 -> oath2.jwt(Customizer.withDefaults()));
 
         return security.build();
