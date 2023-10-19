@@ -13,18 +13,17 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/review")
 public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping
+    @PostMapping("/api/auth/review")
     @ResponseStatus(HttpStatus.CREATED)
     public void createReview(@RequestBody ReviewRequest reviewRequest) {
         reviewService.createReview(reviewRequest);
     }
 
-    @GetMapping("{ReviewId}")
+    @GetMapping("/api/review/{ReviewId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ReviewResponse> getReviewById(@PathVariable("ReviewId") int reviewId) {
         Optional<ReviewResponse> reviewResponse = reviewService.getReviewById(reviewId);
@@ -34,29 +33,28 @@ public class ReviewController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("product/{ProductId}")
+    @GetMapping("/api/review/product/{ProductId}")
     @ResponseStatus(HttpStatus.OK)
     public List<ReviewResponse> getReviewByProductId(@PathVariable("ProductId") int productId) {
         return reviewService.getReviewByProductId(productId);
     }
 
-    @GetMapping("customer/{CustomerId}")
+    @GetMapping("/api/review/customer/{CustomerId}")
     @ResponseStatus(HttpStatus.OK)
     public List<ReviewResponse> getReviewByCustomerId(@PathVariable("CustomerId") int customerId) {
         return reviewService.getReviewByCustomerId(customerId);
     }
 
-    @GetMapping
+    @GetMapping("/api/review")
     @ResponseStatus(HttpStatus.OK)
     public List<ReviewResponse> getAllReview() {
         return reviewService.getAllReviews();
     }
 
-    @DeleteMapping("{ReviewId}")
+    @DeleteMapping("/api/review/{ReviewId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteReviewById(@PathVariable("ReviewId") int reviewId) {
         reviewService.deleteReviewById(reviewId);
     }
-
 
 }
