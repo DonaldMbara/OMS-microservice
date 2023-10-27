@@ -27,7 +27,7 @@ public class CustomerController {
         customerService.createCustomerDetails(customerRequest);
     }
 
-    @GetMapping("/{CustomerId}")
+    @GetMapping("/id/{CustomerId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<CustomerResponse> getCustomerDetails(@PathVariable("CustomerId") int customerId) {
         Optional<CustomerResponse> customerResponse = customerService.getCustomerDetails(customerId);
@@ -38,10 +38,10 @@ public class CustomerController {
 
     }
 
-    @GetMapping("/{Email}")
+    @GetMapping("/email/{Email}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<CustomerResponse> getCustomerDetails(@PathVariable("Email") String enail) {
-        Optional<CustomerResponse> customerResponse = customerService.getCustomerDetailsByEmail(enail);
+    public ResponseEntity<CustomerResponse> getCustomerDetailsByEmail(@PathVariable("Email") String email) {
+        Optional<CustomerResponse> customerResponse = customerService.getCustomerDetailsByEmail(email);
 
         return customerResponse
                 .map(ResponseEntity::ok)
@@ -54,7 +54,7 @@ public class CustomerController {
     public List<CustomerResponse> getCustomersDetails(){return customerService.getCustomersDetailsList();}
 
 
-    @PutMapping("/{Email}")
+    @PutMapping("/update/{Email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateCustomerDetails(@PathVariable("Email") String email, @RequestBody Customer customer) {
         customerService.updateCustomerDetails(email,customer);
