@@ -1,8 +1,8 @@
-/Users/donaldmbara/Projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/service/ProductService.java
-/Users/donaldmbara/Projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/repository/ProductRepository.java
-/Users/donaldmbara/Projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/model/Product.java
-/Users/donaldmbara/Projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/dto/ProductResponse.java
-/Users/donaldmbara/Projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/ProductServiceApplication.java
-/Users/donaldmbara/Projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/dto/ProductRequest.java
-/Users/donaldmbara/Projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/utils/ProductMapper.java
-/Users/donaldmbara/Projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/controller/ProductController.java
+/home/donald/projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/controller/ProductController.java
+/home/donald/projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/ProductServiceApplication.java
+/home/donald/projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/service/ProductService.java
+/home/donald/projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/utils/ProductMapper.java
+/home/donald/projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/dto/ProductResponse.java
+/home/donald/projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/dto/ProductRequest.java
+/home/donald/projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/model/Product.java
+/home/donald/projects/OMS-microservice/product-service/src/main/java/com/donmba/productservice/repository/ProductRepository.java

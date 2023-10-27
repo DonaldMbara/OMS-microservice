@@ -27,8 +27,7 @@ services:
 
   mysql-order-system-db:
     container_name: mysql-order-system-db
-    image: mysql
-    platform: linux/arm64
+    image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: Do1999ld#
       MYSQL_DB: ordersystemDB
@@ -45,7 +44,6 @@ services:
 
   keycloak-mysql:
     container_name: keycloak-mysql
-    platform: linux/arm64
     image: mysql:latest
     volumes:
       - ./mysql_keycloak_data:/var/lib/mysql
