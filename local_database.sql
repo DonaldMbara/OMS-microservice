@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.1.0, for macos13.3 (arm64)
 --
--- Host: localhost    Database: ordersystemDb
+-- Host: localhost    Database: OrdersystemDb
 -- ------------------------------------------------------
 -- Server version	8.1.0
 
@@ -16,10 +16,10 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 -- Create the database if it doesn't exist
-CREATE DATABASE IF NOT EXISTS ordersystemDB;
+CREATE DATABASE IF NOT EXISTS OrdersystemDB;
 
 -- Switch to the newly created database
-USE ordersystemDB;
+USE OrdersystemDB;
 
 --
 -- Table structure for table `category`
@@ -70,7 +70,7 @@ CREATE TABLE `customer`
     `CustomerPostalCode` varchar(10)    DEFAULT NULL,
     `CustomerDOB`        date           DEFAULT NULL,
     `CustomerCellPhone`  varchar(21) NOT NULL,
-    `CustomerEmail`      varchar(30)    DEFAULT NULL,
+    `CustomerEmail`      varchar(30)    DEFAULT NULL unique,
     `WalletBalance`      decimal(15, 2) DEFAULT 0.00,
     `CustomerFirstName`  varchar(30)    DEFAULT NULL,
     `CustomerLastName`   varchar(30)    DEFAULT NULL,
@@ -142,7 +142,7 @@ UNLOCK TABLES;
 
 
 --
--- Table structure for table `orders`
+-- Table structure for table `Orders`
 --
 
 DROP TABLE IF EXISTS `Orders`;
@@ -163,8 +163,8 @@ CREATE TABLE `Orders`
     UNIQUE KEY `OderNumber` (`OrderNumber`),
     KEY `ProductId` (`ProductId`),
     KEY `CustomerId` (`CustomerId`),
-    CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`ProductId`) REFERENCES `Product` (`ProductId`),
-    CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`CustomerId`) REFERENCES `customer` (`CustomerId`)
+    CONSTRAINT `Orders_ibfk_1` FOREIGN KEY (`ProductId`) REFERENCES `Product` (`ProductId`),
+    CONSTRAINT `Orders_ibfk_2` FOREIGN KEY (`CustomerId`) REFERENCES `customer` (`CustomerId`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 48
   DEFAULT CHARSET = utf8mb4
@@ -172,13 +172,13 @@ CREATE TABLE `Orders`
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `orders`
+-- Dumping data for table `Orders`
 --
 
-LOCK TABLES `orders` WRITE;
-/*!40000 ALTER TABLE `orders`
+LOCK TABLES `Orders` WRITE;
+/*!40000 ALTER TABLE `Orders`
     DISABLE KEYS */;
-INSERT INTO `orders`
+INSERT INTO `Orders`
 VALUES (1, NULL, 1, _binary 'base64_encoded_image_data4', 2, 1, '2023-09-22 00:00:00.000000',
         '2023-09-27 00:00:00.000000', 'Processing'),
        (2, NULL, 2, _binary 'base64_encoded_image_data5', 3, 2, '2023-09-23 00:00:00.000000',
@@ -253,7 +253,7 @@ VALUES (1, NULL, 1, _binary 'base64_encoded_image_data4', 2, 1, '2023-09-22 00:0
         '2023-10-04 02:00:00.000000', 'Pending'),
        (47, '20231005162754-9037', 1, _binary '�PNG\r\n\Z\n\0\0\0\rIHDR\0\0B\0\0', 1, 1, '2023-10-04 02:00:00.000000',
         '2023-10-04 02:00:00.000000', 'Pending');
-/*!40000 ALTER TABLE `orders`
+/*!40000 ALTER TABLE `Orders`
     ENABLE KEYS */;
 UNLOCK TABLES;
 

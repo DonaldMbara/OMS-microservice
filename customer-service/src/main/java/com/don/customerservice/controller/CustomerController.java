@@ -38,15 +38,26 @@ public class CustomerController {
 
     }
 
+    @GetMapping("/{Email}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<CustomerResponse> getCustomerDetails(@PathVariable("Email") String enail) {
+        Optional<CustomerResponse> customerResponse = customerService.getCustomerDetailsByEmail(enail);
+
+        return customerResponse
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<CustomerResponse> getCustomersDetails(){return customerService.getCustomersDetailsList();}
 
 
-    @PutMapping("/{CustomerId}")
+    @PutMapping("/{Email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateCustomerDetails(@PathVariable("CustomerId") int customerId, @RequestBody Customer customer) {
-        customerService.updateCustomerDetails(customerId,customer);
+    public void updateCustomerDetails(@PathVariable("Email") String email, @RequestBody Customer customer) {
+        customerService.updateCustomerDetails(email,customer);
     }
 
 }
