@@ -45,6 +45,14 @@ public class CustomerService {
         return customer.map(CustomerMapper::mapToCustomerResponse);
     }
 
+    public Optional<CustomerResponse> getCustomerDetailsByEmail(String email){
+        Optional<Customer> customer = Optional.ofNullable(customerRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Customer does not exist with email: " + email)));
+
+        return customer.map(CustomerMapper::mapToCustomerResponse);
+    }
+
+
     public List<CustomerResponse> getCustomersDetailsList(){
         List<Customer> customers = customerRepository.findAll();
         
@@ -53,9 +61,9 @@ public class CustomerService {
                 .toList();
     }
 
-    public void updateCustomerDetails(int id, Customer customer){
-        Customer updateCustomer = customerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Customer does not exist with id: "+ customer.getId()));
+    public void updateCustomerDetails(String email, Customer customer){
+        Customer updateCustomer = customerRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Customer does not exist with email: "+ customer.getCustomer_email()));
 
 
         updateCustomer.setCustomer_area(customer.getCustomer_area());
