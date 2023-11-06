@@ -22,13 +22,13 @@ CREATE DATABASE IF NOT EXISTS OrdersystemDB;
 USE OrdersystemDB;
 
 --
--- Table structure for table `category`
+-- Table structure for table `Category`
 --
 
-DROP TABLE IF EXISTS `category`;
+DROP TABLE IF EXISTS `Category`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `category`
+CREATE TABLE `Category`
 (
     `CategoryId`   int         NOT NULL AUTO_INCREMENT,
     `CategoryName` varchar(50) NOT NULL,
@@ -40,28 +40,28 @@ CREATE TABLE `category`
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `category`
+-- Dumping data for table `Category`
 --
 
-LOCK TABLES `category` WRITE;
-/*!40000 ALTER TABLE `category`
+LOCK TABLES `Category` WRITE;
+/*!40000 ALTER TABLE `Category`
     DISABLE KEYS */;
-INSERT INTO `category`
+INSERT INTO `Category`
 VALUES (1, 'Smartphones'),
        (2, 'Clothing'),
        (3, 'Home and Garden');
-/*!40000 ALTER TABLE `category`
+/*!40000 ALTER TABLE `Category`
     ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `customer`
+-- Table structure for table `Customer`
 --
 
-DROP TABLE IF EXISTS `customer`;
+DROP TABLE IF EXISTS `Customer`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `customer`
+CREATE TABLE `Customer`
 (
     `CustomerId`         int         NOT NULL AUTO_INCREMENT,
     `CustomerArea`       varchar(100)   DEFAULT NULL,
@@ -82,20 +82,20 @@ CREATE TABLE `customer`
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `customer`
+-- Dumping data for table `Customer`
 --
 
-LOCK TABLES `customer` WRITE;
-/*!40000 ALTER TABLE `customer`
+LOCK TABLES `Customer` WRITE;
+/*!40000 ALTER TABLE `Customer`
     DISABLE KEYS */;
-INSERT INTO `customer`
+INSERT INTO `Customer`
 VALUES (1, 'Sample Area', '123 Main St', 'Sample City', '12345', '1990-01-15', '123-456-7890', 'john@example.com',
         1000.00, 'John', 'Doe'),
        (2, 'Another Area', '456 Elm St', 'Another City', '54321', '1985-07-20', '987-654-3210', 'jane@example.com',
         800.00, 'Jane', 'Smith'),
        (3, 'Sample Area', '123 Main St', 'Sample City', '12345', '1990-01-15', '0769852592', 'mark@example.com',
         2221.00, 'Mark', 'Doe');
-/*!40000 ALTER TABLE `customer`
+/*!40000 ALTER TABLE `Customer`
     ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -164,7 +164,7 @@ CREATE TABLE `Orders`
     KEY `ProductId` (`ProductId`),
     KEY `CustomerId` (`CustomerId`),
     CONSTRAINT `Orders_ibfk_1` FOREIGN KEY (`ProductId`) REFERENCES `Product` (`ProductId`),
-    CONSTRAINT `Orders_ibfk_2` FOREIGN KEY (`CustomerId`) REFERENCES `customer` (`CustomerId`)
+    CONSTRAINT `Orders_ibfk_2` FOREIGN KEY (`CustomerId`) REFERENCES `Customer` (`CustomerId`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 48
   DEFAULT CHARSET = utf8mb4

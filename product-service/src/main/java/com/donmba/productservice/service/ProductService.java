@@ -43,12 +43,39 @@ public class ProductService {
 
     }
 
+    public List<ProductResponse> findByPriceRange(double minPrice,  double maxPrice){
+        List<Product> products = productRepository.findByPriceRange( minPrice,maxPrice);
+
+        return products.stream()
+                .map(ProductMapper::mapToProductResponse)
+                .toList();
+
+    }
+    public List<ProductResponse> findByName(double minPrice,  double maxPrice){
+        List<Product> products = productRepository.findByPriceRange( minPrice,maxPrice);
+
+        return products.stream()
+                .map(ProductMapper::mapToProductResponse)
+                .toList();
+
+    }
+
+
     public Optional<ProductResponse> getProduct(int id){
         Optional<Product> product = Optional.ofNullable(productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product does not exist with id: " + id)));
 
         return product.map(ProductMapper::mapToProductResponse);
     }
+
+    public List<ProductResponse> getProductByCategoryId(int id){
+        List<Product> products = productRepository.findByCategoryId(id);
+
+        return products.stream()
+                .map(ProductMapper::mapToProductResponse)
+                .toList();
+    }
+
 
     public void updateProduct(int id, Product product){
 

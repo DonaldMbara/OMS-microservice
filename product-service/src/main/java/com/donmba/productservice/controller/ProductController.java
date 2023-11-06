@@ -34,6 +34,17 @@ public class ProductController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+    @GetMapping("/api/product/{CategoryId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductResponse> getProductByCategoryId(@PathVariable("CategoryId") int categoryId) {
+        return productService.getProductByCategoryId(categoryId);
+    }
+
+    @GetMapping("/filterByPriceRange")
+    public List<ProductResponse> filterByPriceRange(@RequestParam("minPrice") double minPrice,
+                                                    @RequestParam("maxPrice") double maxPrice) {
+        return productService.findByPriceRange(minPrice, maxPrice);
+    }
 
     @GetMapping("/api/product")
     @ResponseStatus(HttpStatus.OK)
