@@ -51,8 +51,8 @@ public class ProductService {
                 .toList();
 
     }
-    public List<ProductResponse> findByName(double minPrice,  double maxPrice){
-        List<Product> products = productRepository.findByPriceRange( minPrice,maxPrice);
+    public List<ProductResponse> findByName(String name){
+        List<Product> products = productRepository.findByName(name);
 
         return products.stream()
                 .map(ProductMapper::mapToProductResponse)

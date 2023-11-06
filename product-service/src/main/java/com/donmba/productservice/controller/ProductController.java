@@ -21,40 +21,81 @@ public class ProductController {
 
     @PostMapping("/api/auth/product")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(@RequestBody ProductRequest productRequest) {
-        productService.createProduct(productRequest);
+    public ResponseEntity<Void> createProduct(@RequestBody ProductRequest productRequest) {
+        try {
+            productService.createProduct(productRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/api/product/{ProductId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ProductResponse> getProduct(@PathVariable("ProductId") int productId) {
-        Optional<ProductResponse> productResponse = productService.getProduct(productId);
 
-        return productResponse
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            Optional<ProductResponse> productResponse = productService.getProduct(productId);
+
+            return productResponse
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+
+        }
+
     }
     @GetMapping("/api/product/{CategoryId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductResponse> getProductByCategoryId(@PathVariable("CategoryId") int categoryId) {
-        return productService.getProductByCategoryId(categoryId);
+    public ResponseEntity<List<ProductResponse>> getProductByCategoryId(@PathVariable("CategoryId") int categoryId) {
+        try {
+            List<ProductResponse> products = productService.getProductByCategoryId(categoryId);
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/filterByPriceRange")
-    public List<ProductResponse> filterByPriceRange(@RequestParam("minPrice") double minPrice,
-                                                    @RequestParam("maxPrice") double maxPrice) {
-        return productService.findByPriceRange(minPrice, maxPrice);
+    public ResponseEntity<List<ProductResponse>> filterByPriceRange(
+            @RequestParam("minPrice") double minPrice,
+            @RequestParam("maxPrice") double maxPrice) {
+        try {
+            List<ProductResponse> filteredProducts = productService.findByPriceRange(minPrice, maxPrice);
+            return ResponseEntity.ok(filteredProducts);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/filterByName")
+    public ResponseEntity<List<ProductResponse>> filterByName(@RequestParam("name") String name) {
+        try {
+            List<ProductResponse> filteredProducts = productService.findByName(name);
+            return ResponseEntity.ok(filteredProducts);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/api/product")
-    @ResponseStatus(HttpStatus.OK)
-    public List<ProductResponse> getAllProducts() {
-        return productService.getAllProducts();
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
+        try {
+            List<ProductResponse> products = productService.getAllProducts();
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @PutMapping("/api/auth/product/{ProductId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateProduct(@PathVariable("ProductId") int productId, @RequestBody Product product) {
-        productService.updateProduct(productId, product);
+    public ResponseEntity<Void> updateProduct(@PathVariable("ProductId") int productId, @RequestBody Product product) {
+        try {
+            productService.updateProduct(productId, product);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
