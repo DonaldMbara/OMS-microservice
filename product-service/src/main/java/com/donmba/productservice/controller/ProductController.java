@@ -57,7 +57,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/filterByPriceRange")
+    @GetMapping("/api/product/priceRange")
     public ResponseEntity<List<ProductResponse>> filterByPriceRange(
             @RequestParam("minPrice") double minPrice,
             @RequestParam("maxPrice") double maxPrice) {
@@ -69,7 +69,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/filterByName")
+    @GetMapping("/api/product/name")
     public ResponseEntity<List<ProductResponse>> filterByName(@RequestParam("name") String name) {
         try {
             List<ProductResponse> filteredProducts = productService.findByName(name);
