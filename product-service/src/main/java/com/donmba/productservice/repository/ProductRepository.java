@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-    @Query("SELECT p FROM Product p WHERE p.category_id = :categoryId")
+    @Query("SELECT p FROM Product p WHERE p.category_id = :category_id")
     List<Product> findByCategoryId(@Param("category_id") int category_id);
 
     @Query("SELECT p FROM Product p WHERE lower(p.name) LIKE lower(concat('%', :name, '%'))")
