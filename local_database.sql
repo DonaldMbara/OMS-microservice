@@ -16,10 +16,10 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 -- Create the database if it doesn't exist
-CREATE DATABASE IF NOT EXISTS OrdersystemDB;
+CREATE DATABASE IF NOT EXISTS ordersystemDB;
 
 -- Switch to the newly created database
-USE OrdersystemDB;
+USE ordersystemDB;
 
 --
 -- Table structure for table `Category`

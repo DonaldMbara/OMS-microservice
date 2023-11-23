@@ -25,9 +25,9 @@ public class InventoryController {
         inventoryService.createInventory(inventoryRequest);
     }
 
-    @GetMapping("productId/{ProductId}")
+    @GetMapping("/productId/{ProductId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<InventoryResponse> getInventory(@PathVariable("ProductId") int productId) {
+    public ResponseEntity<InventoryResponse> getInventoryById(@PathVariable("ProductId") int productId) {
         Optional<InventoryResponse> inventoryResponse = inventoryService.getInventoryByProductId(productId);
 
         return inventoryResponse
