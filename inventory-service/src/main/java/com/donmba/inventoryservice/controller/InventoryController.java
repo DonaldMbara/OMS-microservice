@@ -25,10 +25,10 @@ public class InventoryController {
         inventoryService.createInventory(inventoryRequest);
     }
 
-    @GetMapping("/{InventoryId}")
+    @GetMapping("productId/{ProductId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<InventoryResponse> getInventory(@PathVariable("InventoryId") int inventoryId) {
-        Optional<InventoryResponse> inventoryResponse = inventoryService.getInventoryById(inventoryId);
+    public ResponseEntity<InventoryResponse> getInventory(@PathVariable("ProductId") int productId) {
+        Optional<InventoryResponse> inventoryResponse = inventoryService.getInventoryByProductId(productId);
 
         return inventoryResponse
                 .map(ResponseEntity::ok)
@@ -36,7 +36,7 @@ public class InventoryController {
 
     }
 
-    @GetMapping("/check-stock/{productId}")
+    @GetMapping("/check-stock/{ProductId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> checkStockAvailability(@PathVariable("productId") int productId) {
         boolean isStockAvailable = inventoryService.checkStockAvailability(productId);

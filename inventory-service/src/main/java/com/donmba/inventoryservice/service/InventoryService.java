@@ -7,8 +7,8 @@ import com.donmba.inventoryservice.repository.InventoryRepository;
 import com.donmba.inventoryservice.utils.InventoryMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +34,9 @@ public class InventoryService {
         log.info("Inventory  has been saved with id: "+ inventory.getId());
     }
 
-    public Optional<InventoryResponse> getInventoryById(int id){
-        Optional<Inventory> inventory = Optional.ofNullable(inventoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Inventory does not exist with id: " + id)));
+    public Optional<InventoryResponse> getInventoryByProductId(int productId){
+        Optional<Inventory> inventory = Optional.ofNullable(inventoryRepository.findByProductId(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Inventory does not exist with id: " + productId)));
 
         return inventory.map(InventoryMapper::mapToInventoryResponse);
     }
