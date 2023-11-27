@@ -75,5 +75,12 @@ public class OrderService {
 
         return order.map(OrderMapper::mapToOrderResponse);
     }
+    public List<OrderResponse> getCustomerOrder(int customerId){
+        List<Order> orders = orderRepository.findByCustomerId(customerId);
+
+        return orders.stream()
+                .map(OrderMapper::mapToOrderResponse)
+                .toList();
+    }
 
 }

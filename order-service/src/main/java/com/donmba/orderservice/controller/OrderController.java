@@ -42,7 +42,7 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
-    @GetMapping("/{orderId}")
+    @GetMapping("/orderId/{orderId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<OrderResponse> getOrder(@PathVariable("orderId") int orderId) {
         Optional<OrderResponse> orderResponse = orderService.getOrder(orderId);
@@ -52,5 +52,10 @@ public class OrderController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/customerId/{customerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<OrderResponse> getAllOrders(@PathVariable("customerId") int customerId){
+        return orderService.getCustomerOrder(customerId);
+    }
 }
 
