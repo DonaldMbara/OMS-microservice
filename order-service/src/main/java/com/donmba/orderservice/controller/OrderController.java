@@ -28,8 +28,8 @@ public class OrderController {
     @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
     @TimeLimiter(name = "inventory")
     @Retry(name = "inventory")
-    public CompletableFuture<String> createOrder(@RequestBody OrderRequest orderRequest){
-        return CompletableFuture.supplyAsync(() -> orderService.createOrder(orderRequest));
+    public CompletableFuture<List<String>> createOrder(@RequestBody List<OrderRequest> orderRequests) {
+        return CompletableFuture.supplyAsync(() -> orderService.createOrders(orderRequests));
     }
 
     public CompletableFuture<String> fallbackMethod(OrderRequest orderRequest, RuntimeException runtimeException){

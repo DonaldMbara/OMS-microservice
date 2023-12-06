@@ -14,6 +14,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,40 +27,44 @@ public class OrderService {
     private final WebClient.Builder webClientBuilder;
     private final KafkaTemplate<String,OrderPlacedEvent> kafkaTemplate;
 
-    public String createOrder(OrderRequest orderRequest){
+    public List<String> createOrders(List<OrderRequest> orderRequests){
+        List<String> orderNumbers = new ArrayList<>();
 
-        int productId = orderRequest.getProduct_id();
+        orderRequests.forEach(orderRequest -> {
+            int productId = orderRequest.getProduct_id();
 
-        Boolean isStockAvailable = webClientBuilder.build()
-                .get()
-                .uri("http://localhost:8087/api/inventory/check-stock/{productId}", productId)
-                .retrieve()
-                .bodyToMono(Boolean.class)
-                .block();
-
-        if (isStockAvailable != null && isStockAvailable) {
-            Order order = Order.builder()
-                    .order_number(OrderNumberGenerator.generateOrderNumber())
-                    .product_id(orderRequest.getProduct_id())
-                    .thumbnail(orderRequest.getThumbnail())
-                    .quantity(orderRequest.getQuantity())
-                    .customer_id(orderRequest.getCustomer_id())
-                    .order_date(orderRequest.getOrder_date())
-                    .order_delivery(orderRequest.getOrder_delivery())
-                    .status(orderRequest.getStatus())
-                    .build();
-
-            orderRepository.save(order);
-            kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrder_number()));
-            log.info("Order placed with order number {} is saved", order.getOrder_id());
-            return "Order placed successfully";
-
-        } else {
-            throw  new IllegalArgumentException("Stock is not available for the following product");
-        }
+            Boolean isStockAvailable = webClientBuilder.build()
+                    .get()
+                    .uri("http://inventory-service/api/inventory/check-stock/{productId}", productId)
+                    .retrieve()
+                    .bodyToMono(Boolean.class)
+                    .block();
 
 
+            if (isStockAvailable != null && isStockAvailable) {
+                Order order = Order.builder()
+                        .order_number(OrderNumberGenerator.generateOrderNumber())
+                        .product_id(orderRequest.getProduct_id())
+                        .thumbnail(orderRequest.getThumbnail())
+                        .quantity(orderRequest.getQuantity())
+                        .customer_id(orderRequest.getCustomer_id())
+                        .order_date(orderRequest.getOrder_date())
+                        .order_delivery(orderRequest.getOrder_delivery())
+                        .status(orderRequest.getStatus())
+                        .build();
+
+                orderRepository.save(order);
+                kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrder_number()));
+                log.info("Order placed with order number {} is saved", order.getOrder_number());
+                orderNumbers.add(order.getOrder_number());
+            } else {
+                throw new IllegalArgumentException("Stock is not available for the following product");
+            }
+
+        });
+        return null;
     }
+
 
     public List<OrderResponse> getAllOrders(){
         List<Order> orders = orderRepository.findAll();

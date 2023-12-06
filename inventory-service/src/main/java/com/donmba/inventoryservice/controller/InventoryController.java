@@ -13,19 +13,18 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/inventory")
 @RequiredArgsConstructor
 public class InventoryController {
 
     private final InventoryService inventoryService;
 
-    @PostMapping
+    @PostMapping("/api/auth/inventory")
     @ResponseStatus(HttpStatus.CREATED)
     public void createInventory(@RequestBody InventoryRequest inventoryRequest){
         inventoryService.createInventory(inventoryRequest);
     }
 
-    @GetMapping("/productId/{ProductId}")
+    @GetMapping("/api/productId/{ProductId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<InventoryResponse> getInventoryByProductId(@PathVariable("ProductId") int productId) {
         Optional<InventoryResponse> inventoryResponse = inventoryService.getInventoryByProductId(productId);
@@ -36,7 +35,7 @@ public class InventoryController {
 
     }
 
-    @GetMapping("/check-stock/{ProductId}")
+    @GetMapping("/api/check-stock/{ProductId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> checkStockAvailability(@PathVariable("productId") int productId) {
         boolean isStockAvailable = inventoryService.checkStockAvailability(productId);
@@ -53,7 +52,7 @@ public class InventoryController {
     public List<InventoryResponse> getInventoryDetails(){return inventoryService.getInventoryList();}
 
 
-    @PutMapping("/{ProductId}")
+    @PutMapping("/api/{ProductId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateInventoryDetails(@PathVariable("ProductId") int productId, @RequestBody Inventory inventory) {
         inventoryService.updateInventoryDetails(productId,inventory);
