@@ -21,7 +21,7 @@ public class SecurityConfig {
         security.csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/eureka/**", "/api/product/**", "/api/review/**","/api/inventory/**").permitAll()
-                        .pathMatchers("/auth/product/**","/auth/review/**").hasRole("Admin")
+                        .pathMatchers("/auth/product/**","/auth/inventory/**").hasRole("Admin")
                         .anyExchange().authenticated())
                 .oauth2ResourceServer(oath2 -> oath2.jwt(Customizer.withDefaults()));
 

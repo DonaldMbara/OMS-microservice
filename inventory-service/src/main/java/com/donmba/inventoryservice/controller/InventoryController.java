@@ -24,7 +24,7 @@ public class InventoryController {
         inventoryService.createInventory(inventoryRequest);
     }
 
-    @GetMapping("/api/productId/{ProductId}")
+    @GetMapping("/api/inventory/productId/{ProductId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<InventoryResponse> getInventoryByProductId(@PathVariable("ProductId") int productId) {
         Optional<InventoryResponse> inventoryResponse = inventoryService.getInventoryByProductId(productId);
@@ -35,7 +35,7 @@ public class InventoryController {
 
     }
 
-    @GetMapping("/api/check-stock/{ProductId}")
+    @GetMapping("/api/inventory/check-stock/{ProductId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> checkStockAvailability(@PathVariable("productId") int productId) {
         boolean isStockAvailable = inventoryService.checkStockAvailability(productId);
@@ -52,7 +52,7 @@ public class InventoryController {
     public List<InventoryResponse> getInventoryDetails(){return inventoryService.getInventoryList();}
 
 
-    @PutMapping("/api/{ProductId}")
+    @PutMapping("/api/auth/inventory{ProductId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateInventoryDetails(@PathVariable("ProductId") int productId, @RequestBody Inventory inventory) {
         inventoryService.updateInventoryDetails(productId,inventory);
