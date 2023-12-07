@@ -77,6 +77,11 @@ services:
     container_name: zipkin
     ports:
       - "9411:9411"
+    command:
+      - "--zipkin.collector.sample-rate=1.0"
+      - "--zipkin.query.lookback=31536000000"
+      - "--logging.level.root=INF"
+
 
   discovery-server:
     image: donmba/discovery-server

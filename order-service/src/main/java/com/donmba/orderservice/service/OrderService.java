@@ -35,7 +35,7 @@ public class OrderService {
 
             Boolean isStockAvailable = webClientBuilder.build()
                     .get()
-                    .uri("http://inventory-service/api/inventory/check-stock/{productId}", productId)
+                    .uri("http://172.20.0.12:8087/api/inventory/check-stock/{productId}", productId)
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
