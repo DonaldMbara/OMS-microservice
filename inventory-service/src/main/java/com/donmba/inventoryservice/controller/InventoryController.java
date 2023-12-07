@@ -37,7 +37,7 @@ public class InventoryController {
 
     @GetMapping("/api/inventory/check-stock/{ProductId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Boolean> checkStockAvailability(@PathVariable("productId") int productId) {
+    public ResponseEntity<Boolean> checkStockAvailability(@PathVariable("ProductId") int productId) {
         boolean isStockAvailable = inventoryService.checkStockAvailability(productId);
 
         if (isStockAvailable) {
