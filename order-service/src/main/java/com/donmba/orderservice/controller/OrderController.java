@@ -28,30 +28,36 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @TimeLimiter(name = "inventory", fallbackMethod = "fallbackMethod")
     @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
-    @TimeLimiter(name = "inventory")
     @Retry(name = "inventory")
-    public ResponseEntity<?> createOrder(@RequestBody List<OrderRequest> orderRequests) {
-        try {
-            List<String> orderIds = orderService.createOrders(orderRequests);
-            return ResponseEntity.status(HttpStatus.CREATED).body(orderIds);
-        } catch (Exception ex) {
-            log.error("Exception occurred while creating orders: {}", ex.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Order creation failed");
-        }
+    public CompletableFuture<ResponseEntity<?>> createOrder(@RequestBody List<OrderRequest> orderRequests) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                List<String> orderIds = orderService.createOrders(orderRequests);
+                return ResponseEntity.status(HttpStatus.CREATED).body(orderIds);
+            } catch (Exception ex) {
+                log.error("Exception occurred while creating orders: {}", ex.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Order creation failed");
+            }
+        });
     }
 
-    public ResponseEntity<?> fallbackMethod(List<OrderRequest> orderRequests, Throwable throwable) {
-        log.error("Fallback method triggered due to error: {}", throwable.getMessage());
 
-        if (throwable instanceof RuntimeException) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Oops! Something went wrong with order creation. Please try again later.");
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Unexpected error occurred. Please contact support.");
-        }
+    public CompletableFuture<ResponseEntity<?>> fallbackMethod(List<OrderRequest> orderRequests, Throwable throwable) {
+        return CompletableFuture.supplyAsync(() -> {
+            log.error("Fallback method triggered due to error: {}", throwable.getMessage());
+
+            if (throwable instanceof RuntimeException) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Oops! Something went wrong with order creation. Please try again later.");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Unexpected error occurred. Please contact support.");
+            }
+        });
     }
+
 
 
     @GetMapping
