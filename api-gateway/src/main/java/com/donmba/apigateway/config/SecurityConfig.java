@@ -22,6 +22,7 @@ public class SecurityConfig {
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/eureka/**", "/api/product/**", "/api/review/**","/api/inventory/**").permitAll()
                         .pathMatchers("/auth/product/**","/auth/inventory/**").hasRole("Admin")
+                        .pathMatchers("/prometheus/**").permitAll()
                         .anyExchange().authenticated())
                 .oauth2ResourceServer(oath2 -> oath2.jwt(Customizer.withDefaults()));
 
@@ -33,6 +34,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:4200");
+        config.addAllowedOrigin("http://localhost:9090");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
