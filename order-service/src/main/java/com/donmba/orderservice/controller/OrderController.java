@@ -8,10 +8,12 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -19,6 +21,7 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequestMapping("/api/order")
 @RequiredArgsConstructor
+@Slf4j
 public class OrderController {
 
     private final OrderService orderService;
@@ -29,12 +32,25 @@ public class OrderController {
     @TimeLimiter(name = "inventory")
     @Retry(name = "inventory")
     public CompletableFuture<List<String>> createOrder(@RequestBody List<OrderRequest> orderRequests) {
-        return CompletableFuture.supplyAsync(() -> orderService.createOrders(orderRequests));
+        return CompletableFuture.supplyAsync(() -> orderService.createOrders(orderRequests))
+                .exceptionally(ex -> {
+                    log.error("Exception occurred while creating orders: {}", ex.getMessage());
+                    throw new RuntimeException("Order creation failed", ex);
+                });
     }
 
-    public CompletableFuture<String> fallbackMethod(OrderRequest orderRequest, RuntimeException runtimeException){
-        return  CompletableFuture.supplyAsync(() -> "Oops! Something went wrong, please be order after some time!");
+    public CompletableFuture<List<String>> fallbackMethod(List<OrderRequest> orderRequests, Throwable throwable) {
+        log.error("Fallback method triggered due to error: {}", throwable.getMessage());
+
+        if (throwable instanceof RuntimeException) {
+            return CompletableFuture.completedFuture(
+                    Collections.singletonList("Oops! Something went wrong with order creation. Please try again later."));
+        } else {
+            return CompletableFuture.completedFuture(
+                    Collections.singletonList("Unexpected error occurred. Please contact support."));
+        }
     }
+
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

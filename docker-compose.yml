@@ -80,7 +80,12 @@ services:
     command:
       - "--zipkin.collector.sample-rate=1.0"
       - "--zipkin.query.lookback=31536000000"
-      - "--logging.level.root=INF"
+      - "--logging.level.zipkin=INFO"
+      - "--logging.level.zipkin2=INFO"
+      - "--logging.level.brave=INFO"
+      - "--logging.level.org.springframework=INFO"
+      - "--logging.level.com.zaxxer=INFO"
+      # Add other logging levels if needed
 
 
   discovery-server:
