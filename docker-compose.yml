@@ -85,7 +85,6 @@ services:
       - "--logging.level.brave=INFO"
       - "--logging.level.org.springframework=INFO"
       - "--logging.level.com.zaxxer=INFO"
-      # Add other logging levels if needed
 
 
   discovery-server:
