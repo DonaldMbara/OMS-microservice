@@ -31,23 +31,25 @@ public class OrderController {
     @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
     @TimeLimiter(name = "inventory")
     @Retry(name = "inventory")
-    public CompletableFuture<List<String>> createOrder(@RequestBody List<OrderRequest> orderRequests) {
-        return CompletableFuture.supplyAsync(() -> orderService.createOrders(orderRequests))
-                .exceptionally(ex -> {
-                    log.error("Exception occurred while creating orders: {}", ex.getMessage());
-                    throw new RuntimeException("Order creation failed", ex);
-                });
+    public ResponseEntity<?> createOrder(@RequestBody List<OrderRequest> orderRequests) {
+        try {
+            List<String> orderIds = orderService.createOrders(orderRequests);
+            return ResponseEntity.status(HttpStatus.CREATED).body(orderIds);
+        } catch (Exception ex) {
+            log.error("Exception occurred while creating orders: {}", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Order creation failed");
+        }
     }
 
-    public CompletableFuture<List<String>> fallbackMethod(List<OrderRequest> orderRequests, Throwable throwable) {
+    public ResponseEntity<?> fallbackMethod(List<OrderRequest> orderRequests, Throwable throwable) {
         log.error("Fallback method triggered due to error: {}", throwable.getMessage());
 
         if (throwable instanceof RuntimeException) {
-            return CompletableFuture.completedFuture(
-                    Collections.singletonList("Oops! Something went wrong with order creation. Please try again later."));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Oops! Something went wrong with order creation. Please try again later.");
         } else {
-            return CompletableFuture.completedFuture(
-                    Collections.singletonList("Unexpected error occurred. Please contact support."));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Unexpected error occurred. Please contact support.");
         }
     }
 
