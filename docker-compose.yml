@@ -211,8 +211,6 @@ services:
       - product-service
       - notification-service
       - review-service
-      - api-gateway
-      - discovery-server
       - customer-service
   
 
@@ -220,9 +218,9 @@ services:
     image: grafana/grafana-oss:latest
     container_name: grafana
     restart: unless-stopped
-    ports: 
+    ports:
       - "3000:3000"
-    links: 
+    links:
       - prometheus:prometheus
     volumes:
       - ./grafana:/var/lib/grafana
