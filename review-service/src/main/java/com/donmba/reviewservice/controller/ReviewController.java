@@ -39,6 +39,19 @@ public class ReviewController {
         return reviewService.getReviewByProductId(productId);
     }
 
+    @GetMapping("/api/review/product/rating/{ProductId}")
+    @ResponseStatus(HttpStatus.OK)
+    public double getAverageRatingByProductId(@PathVariable("ProductId") int productId) {
+        List<ReviewResponse> reviews = reviewService.getReviewByProductId(productId);
+
+        double averageRating = reviews.stream()
+                .mapToInt(ReviewResponse::getReview_stars)
+                .average()
+                .orElse(0.0);
+
+        return averageRating;
+    }
+
     @GetMapping("/api/review/customer/{CustomerId}")
     @ResponseStatus(HttpStatus.OK)
     public List<ReviewResponse> getReviewByCustomerId(@PathVariable("CustomerId") int customerId) {
