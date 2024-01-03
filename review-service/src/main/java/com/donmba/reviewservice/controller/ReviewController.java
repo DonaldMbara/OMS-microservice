@@ -13,101 +13,61 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/review")
 public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping("/api/review")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createReview(@RequestBody ReviewRequest reviewRequest) {
-        try{
+        try {
             reviewService.createReview(reviewRequest);
             return ResponseEntity.status(HttpStatus.CREATED).build();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-
-    @GetMapping("/api/review/{ReviewId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ReviewResponse> getReviewById(@PathVariable("ReviewId") int reviewId) {
-        try {
-            Optional<ReviewResponse> reviewResponse = reviewService.getReviewById(reviewId);
-            return reviewResponse
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
+    @GetMapping("/{reviewId}")
+    public ResponseEntity<ReviewResponse> getReviewById(@PathVariable("reviewId") int reviewId) {
+        Optional<ReviewResponse> reviewResponse = reviewService.getReviewById(reviewId);
+        return reviewResponse
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/api/review/product/{ProductId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<ReviewResponse>> getReviewByProductId(@PathVariable("ProductId") int productId) {
-
-        try{
-            List<ReviewResponse> reviews =  reviewService.getReviewByProductId(productId);
-            return ResponseEntity.ok(reviews);
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<List<ReviewResponse>> getReviewByProductId(@PathVariable("productId") int productId) {
+        List<ReviewResponse> reviews = reviewService.getReviewByProductId(productId);
+        return ResponseEntity.ok(reviews);
     }
 
-    @GetMapping("/api/review/product/rating/{ProductId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Double> getAverageRatingByProductId(@PathVariable("ProductId") int productId) {
-
-        try{
-            List<ReviewResponse> reviews = reviewService.getReviewByProductId(productId);
-
-            double averageRating = reviews.stream()
-                    .mapToInt(ReviewResponse::getReview_stars)
-                    .average()
-                    .orElse(0.0);
-            return ResponseEntity.ok(averageRating);
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-
-
+    @GetMapping("/product/rating/{productId}")
+    public ResponseEntity<Double> getAverageRatingByProductId(@PathVariable("productId") int productId) {
+        List<ReviewResponse> reviews = reviewService.getReviewByProductId(productId);
+        double averageRating = reviews.stream()
+                .mapToInt(ReviewResponse::getReview_stars)
+                .average()
+                .orElse(0.0);
+        return ResponseEntity.ok(averageRating);
     }
 
-    @GetMapping("/api/review/customer/{CustomerId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<ReviewResponse>> getReviewByCustomerId(@PathVariable("CustomerId") int customerId) {
-        try{
-            List<ReviewResponse> reviews = reviewService.getReviewByCustomerId(customerId);
-            return ResponseEntity.ok(reviews);
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-
-        }
-
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<ReviewResponse>> getReviewByCustomerId(@PathVariable("customerId") int customerId) {
+        List<ReviewResponse> reviews = reviewService.getReviewByCustomerId(customerId);
+        return ResponseEntity.ok(reviews);
     }
 
-    @GetMapping("/api/review")
-    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
     public ResponseEntity<List<ReviewResponse>> getAllReview() {
-
-       try{
-           List<ReviewResponse> reviews = reviewService.getAllReviews();
-           return  ResponseEntity.ok(reviews);
-       } catch (Exception e){
-           return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-
-       }
+        List<ReviewResponse> reviews = reviewService.getAllReviews();
+        return ResponseEntity.ok(reviews);
     }
 
-    @DeleteMapping("/api/review/{ReviewId}")
+    @DeleteMapping("/{reviewId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteReviewById(@PathVariable("ReviewId") int reviewId) {
+    public void deleteReviewById(@PathVariable("reviewId") int reviewId) {
         reviewService.deleteReviewById(reviewId);
     }
-
 }
