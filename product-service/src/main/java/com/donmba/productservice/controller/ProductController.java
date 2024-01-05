@@ -46,7 +46,7 @@ public class ProductController {
         }
 
     }
-    @GetMapping("/api/product/{CategoryId}")
+    @GetMapping("/api/product/category/{CategoryId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ProductResponse>> getProductByCategoryId(@PathVariable("CategoryId") int categoryId) {
         try {
@@ -69,7 +69,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/api/product/name")
+    @GetMapping("/api/product/name/name")
     public ResponseEntity<List<ProductResponse>> filterByName(@RequestParam("name") String name) {
         try {
             List<ProductResponse> filteredProducts = productService.findByName(name);
