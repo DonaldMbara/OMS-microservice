@@ -25,9 +25,9 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
-    private final KafkaTemplate<String,OrderPlacedEvent> kafkaTemplate;
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
-    public List<String> createOrders(List<OrderRequest> orderRequests){
+    public List<String> createOrders(List<OrderRequest> orderRequests) {
         List<String> orderNumbers = new ArrayList<>();
 
         orderRequests.forEach(orderRequest -> {
@@ -35,7 +35,8 @@ public class OrderService {
 
             Boolean isStockAvailable = webClientBuilder.build()
                     .get()
-                    .uri("http://172.20.0.12:8087/api/inventory/check-stock/{productId}", productId)
+                    .uri("http://inventory-service/api/inventory/check-stock",
+                            uriBuilder -> uriBuilder.queryParam("productId", productId).build())
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
@@ -62,11 +63,11 @@ public class OrderService {
             }
 
         });
-        return null;
+        return orderNumbers;
     }
 
 
-    public List<OrderResponse> getAllOrders(){
+    public List<OrderResponse> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
 
         return orders.stream()
@@ -74,13 +75,14 @@ public class OrderService {
                 .toList();
     }
 
-    public Optional<OrderResponse> getOrder(int id){
+    public Optional<OrderResponse> getOrder(int id) {
         Optional<Order> order = Optional.ofNullable(orderRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Order does not exist with id: " + id)));
 
         return order.map(OrderMapper::mapToOrderResponse);
     }
-    public List<OrderResponse> getCustomerOrder(int customerId){
+
+    public List<OrderResponse> getCustomerOrder(int customerId) {
         List<Order> orders = orderRepository.findByCustomerId(customerId);
 
         return orders.stream()
