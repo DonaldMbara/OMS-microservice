@@ -39,7 +39,7 @@ services:
     ports:
       - "3307:3307"
     command: --verbose --log-bin-index=/tmp/tmp.jeNHbS9fRW
-    restart: unless-stopped
+    restart: always
 
 
   keycloak-mysql:
@@ -77,15 +77,6 @@ services:
     container_name: zipkin
     ports:
       - "9411:9411"
-    command:
-      - "--zipkin.collector.sample-rate=1.0"
-      - "--zipkin.query.lookback=31536000000"
-      - "--logging.level.zipkin=INFO"
-      - "--logging.level.zipkin2=INFO"
-      - "--logging.level.brave=INFO"
-      - "--logging.level.org.springframework=INFO"
-      - "--logging.level.com.zaxxer=INFO"
-
 
   discovery-server:
     image: donmba/discovery-server
@@ -200,7 +191,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
-    restart: unless-stopped
+    restart: always
     ports:
       - "9090:9090"
     volumes:
@@ -217,7 +208,7 @@ services:
   grafana:
     image: grafana/grafana-oss:latest
     container_name: grafana
-    restart: unless-stopped
+    restart: always
     ports:
       - "3000:3000"
     links:
