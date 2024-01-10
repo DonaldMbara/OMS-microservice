@@ -38,7 +38,8 @@ public class OrderService {
                         .get()
                         .uri(uriBuilder -> uriBuilder
                                 .scheme("http")
-                                .host("inventory-service") // Use the service ID here
+                                .host("inventory-service:8087")
+                                .port(8087)
                                 .path("/api/inventory/check-stock")
                                 .queryParam("productId", productId)
                                 .build())
