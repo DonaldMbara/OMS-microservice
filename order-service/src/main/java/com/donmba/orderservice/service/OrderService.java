@@ -33,34 +33,44 @@ public class OrderService {
         orderRequests.forEach(orderRequest -> {
             int productId = orderRequest.getProduct_id();
 
-            Boolean isStockAvailable = webClientBuilder.build()
-                    .get()
-                    .uri("http://inventory-service/api/inventory/check-stock",
-                            uriBuilder -> uriBuilder.queryParam("productId", productId).build())
-                    .retrieve()
-                    .bodyToMono(Boolean.class)
-                    .block();
+            try{
+                Boolean isStockAvailable = webClientBuilder.build()
+                        .get()
+                        .uri(uriBuilder -> uriBuilder
+                                .scheme("http")
+                                .host("inventory-service") // Use the service ID here
+                                .path("/api/inventory/check-stock")
+                                .queryParam("productId", productId)
+                                .build())
+                        .retrieve()
+                        .bodyToMono(Boolean.class)
+                        .block();
 
 
-            if (isStockAvailable != null && isStockAvailable) {
-                Order order = Order.builder()
-                        .order_number(OrderNumberGenerator.generateOrderNumber())
-                        .product_id(orderRequest.getProduct_id())
-                        .thumbnail(orderRequest.getThumbnail())
-                        .quantity(orderRequest.getQuantity())
-                        .customer_id(orderRequest.getCustomer_id())
-                        .order_date(orderRequest.getOrder_date())
-                        .order_delivery(orderRequest.getOrder_delivery())
-                        .status(orderRequest.getStatus())
-                        .build();
+                if (isStockAvailable != null && isStockAvailable) {
+                    Order order = Order.builder()
+                            .order_number(OrderNumberGenerator.generateOrderNumber())
+                            .product_id(orderRequest.getProduct_id())
+                            .thumbnail(orderRequest.getThumbnail())
+                            .quantity(orderRequest.getQuantity())
+                            .customer_id(orderRequest.getCustomer_id())
+                            .order_date(orderRequest.getOrder_date())
+                            .order_delivery(orderRequest.getOrder_delivery())
+                            .status(orderRequest.getStatus())
+                            .build();
 
-                orderRepository.save(order);
-                kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrder_number()));
-                log.info("Order placed with order number {} is saved", order.getOrder_number());
-                orderNumbers.add(order.getOrder_number());
-            } else {
-                throw new IllegalArgumentException("Stock is not available for the following product");
+                    orderRepository.save(order);
+                    kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrder_number()));
+                    log.info("Order placed with order number {} is saved", order.getOrder_number());
+                    orderNumbers.add(order.getOrder_number());
+                } else {
+                    throw new IllegalArgumentException("Stock is not available for the following product");
+                }
+            } catch (Exception e){
+                log.error("Exception occurred while checking stock for product ID {}: {}", productId, e.getMessage());
+                throw new RuntimeException("Error checking stock for product ID: " + productId, e);
             }
+
 
         });
         return orderNumbers;

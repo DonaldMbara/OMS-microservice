@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClientException;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,12 +34,30 @@ public class OrderController {
     @Retry(name = "inventory")
     public CompletableFuture<List<String>> placeOrder(@RequestBody List<OrderRequest> orderRequests) {
         log.info("Placing Order");
-        return CompletableFuture.supplyAsync(() -> orderService.createOrders(orderRequests));
+
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return orderService.createOrders(orderRequests);
+            } catch (Exception e) {
+                log.error("Error placing orders: {}", e.getMessage());
+                throw new RuntimeException("Error placing orders", e);
+            }
+        });
     }
 
     public CompletableFuture<List<String>> fallbackMethod(List<OrderRequest> orderRequests, RuntimeException runtimeException) {
-        log.info("Cannot Place Order. Executing Fallback logic");
-        return CompletableFuture.completedFuture(Collections.singletonList("Oops! Something went wrong, please order after some time!"));
+        log.error("Fallback triggered due to error: {}", runtimeException.getMessage());
+
+        String errorMessage;
+        if (runtimeException instanceof IllegalArgumentException) {
+            errorMessage = "Invalid order request data. Please check your input.";
+        } else if (runtimeException instanceof WebClientException) {
+            errorMessage = "Failed to connect to the inventory service. Please try again later.";
+        } else {
+            errorMessage = "Oops! Something went wrong while placing the order. Please try again later.";
+        }
+
+        return CompletableFuture.completedFuture(Collections.singletonList(errorMessage));
     }
 
 
@@ -56,7 +75,6 @@ public class OrderController {
             }
         });
     }
-
 
 
     @GetMapping
