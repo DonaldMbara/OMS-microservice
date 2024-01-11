@@ -36,11 +36,17 @@ public class OrderService {
             try{
                 Boolean isStockAvailable = webClientBuilder.build()
                         .get()
-                        .uri("http://inventory-service/api/inventory/check-stock",
-                                uriBuilder -> uriBuilder.queryParam("productId", productId).build())
+                        .uri(uriBuilder -> uriBuilder
+                                .scheme("http")
+                                .host("api-gateway") // Use the API gateway service name
+                                .port(8088) // Specify the API gateway port
+                                .path("/inventory-service/api/inventory/check-stock")
+                                .queryParam("productId", productId)
+                                .build())
                         .retrieve()
                         .bodyToMono(Boolean.class)
                         .block();
+
 
 
                 if (isStockAvailable != null && isStockAvailable) {
