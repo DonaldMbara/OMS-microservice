@@ -38,8 +38,8 @@ public class OrderService {
                         .get()
                         .uri(uriBuilder -> uriBuilder
                                 .scheme("http")
-                                .host("api-gateway") // Use the API gateway service name
-                                .port(8088) // Specify the API gateway port
+                                .host("api-gateway")
+                                .port(8088)
                                 .path("/inventory-service/api/inventory/check-stock")
                                 .queryParam("productId", productId)
                                 .build())
