@@ -45,23 +45,6 @@ public class OrderController {
         });
     }
 
-    public CompletableFuture<List<String>> fallbackMethod(List<OrderRequest> orderRequests, RuntimeException runtimeException) {
-        log.error("Fallback triggered due to error: {}", runtimeException.getMessage());
-
-        String errorMessage;
-        if (runtimeException instanceof IllegalArgumentException) {
-            errorMessage = "Invalid order request data. Please check your input.";
-        } else if (runtimeException instanceof WebClientException) {
-            errorMessage = "Failed to connect to the inventory service. Please try again later.";
-        } else {
-            errorMessage = "Oops! Something went wrong while placing the order. Please try again later.";
-        }
-
-        return CompletableFuture.completedFuture(Collections.singletonList(errorMessage));
-    }
-
-
-
     public CompletableFuture<ResponseEntity<?>> fallbackMethod(List<OrderRequest> orderRequests, Throwable throwable) {
         return CompletableFuture.supplyAsync(() -> {
             log.error("Fallback method triggered due to error: {}", throwable.getMessage());

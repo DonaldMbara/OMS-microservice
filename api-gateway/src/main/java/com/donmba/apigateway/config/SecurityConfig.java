@@ -20,11 +20,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity security) {
         security.csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/eureka/**",
-                                "/api/product/**", "/api/review/**",
-                                "/api/inventory/**",
-                                "/api/inventory/check-stock")
-                        .permitAll()
+                        .pathMatchers("/eureka/**", "/api/product/**", "/api/review/**","/api/inventory/**").permitAll()
                         .pathMatchers("/auth/product/**","/auth/inventory/**").hasRole("Admin")
                         .pathMatchers("/prometheus/**").permitAll()
                         .anyExchange().authenticated())

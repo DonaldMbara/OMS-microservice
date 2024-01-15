@@ -40,7 +40,7 @@ public class OrderService {
                                 .scheme("http")
                                 .host("api-gateway")
                                 .port(8088)
-                                .path("/inventory-service/api/inventory/check-stock")
+                                .path("/api/inventory/check-stock")
                                 .queryParam("productId", productId)
                                 .build())
                         .retrieve()
