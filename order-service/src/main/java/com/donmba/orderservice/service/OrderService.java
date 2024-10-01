@@ -45,8 +45,8 @@ public class OrderService {
                                 .build())
                         .retrieve()
                         .bodyToMono(Boolean.class)
+                        .doOnNext(stock -> System.out.println("Stock check for productId: " + productId + " is available: " + stock))
                         .block();
-
 
 
                 if (isStockAvailable != null && isStockAvailable) {
